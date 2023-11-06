@@ -6,10 +6,15 @@ spring-plugin = { id = "org.springframework.boot", version.ref = "spring-boot" }
 
 [libraries]
 spring-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-jpa = {module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
+spring-validator = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
+
+
 spring-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
 
 lombok = { module = "org.projectlombok:lombok", version = "1.18.26" }
 postgresql-driver = { module = "org.postgresql:postgresql", version = "42.6.0" }
+liquibase = { module = "org.liquibase:liquibase-core", version = "4.24.0" }
 
 #Test libraries
 testcontainers-core = { module = "org.testcontainers:testcontainers", version = "1.19.1" }

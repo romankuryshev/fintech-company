@@ -1,0 +1,22 @@
+plugins {
+    id "com.google.protobuf" version "0.9.4"
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.24.4'
+    }
+
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.59.0'
+        }
+    }
+}
+
+dependencies {
+    implementation libs.liquibase
+    implementation libs.spring.jpa
+    implementation libs.spring.validator
+    implementation libs.postgresql.driver
+}

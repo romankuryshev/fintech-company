@@ -1,5 +1,4 @@
-rootProject.name = 'fintech-company-ab-2023'
+rootProject.name = 'fintech-company-romankuryshev'
 
 include 'product-engine'
 include 'payment-gate'
-

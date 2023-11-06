@@ -1,0 +1,12 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.change-log-master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/fintech
+    username: postgres
+    password: postgres

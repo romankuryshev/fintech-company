@@ -11,13 +11,14 @@ subprojects {
 
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
+            languageVersion.set(JavaLanguageVersion.of(18))
         }
     }
 
     dependencies {
         // You can add common dependencies here...
         implementation libs.spring.web
+        implementation libs.lombok
     }
 
     repositories {
