@@ -5,8 +5,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+    show-sql: true
 
   datasource:
+#    url: jdbc:postgresql://db:5432/fintech
     url: jdbc:postgresql://localhost:5433/fintech
     username: postgres
     password: postgres
+
+grpc:
+  server:
+    reflection-service-enabled: true
