@@ -18,7 +18,8 @@ subprojects {
     dependencies {
         // You can add common dependencies here...
         implementation libs.spring.web
-        implementation libs.lombok
+        compileOnly libs.lombok
+        annotationProcessor libs.lombok
     }
 
     repositories {
