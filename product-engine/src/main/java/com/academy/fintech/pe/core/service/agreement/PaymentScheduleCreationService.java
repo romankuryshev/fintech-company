@@ -11,6 +11,7 @@ import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementStatu
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.dto.PaymentScheduleRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -51,8 +52,9 @@ public class PaymentScheduleCreationService {
     /**
      * Метод новое расписание платежей
      * @param scheduleDto
-     * @return Optional @{code null} если создание невозможно, {@link PaymentSchedule} иначе
+     * @return Optional {@code null} если создание невозможно, {@link PaymentSchedule} иначе
      */
+    @Transactional
     public Optional<PaymentSchedule> createSchedule(PaymentScheduleRequestDto scheduleDto) {
         Agreement agreement = agreementService.getById(scheduleDto.agreementId());
         if (agreement == null) {
