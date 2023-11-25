@@ -36,5 +36,3 @@ testcontainres-jupiter = { module = "org.testcontainers:junit-jupiter", version.
 
 jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.0" }
 grpc-testing = { module = "io.grpc:grpc-testing", version.ref = "grpc" }
-
-
