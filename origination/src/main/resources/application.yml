@@ -1,6 +1,23 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.change-log-master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://db:5432/origination
+#    url: jdbc:postgresql://localhost:5434/origination
+    username: postgres
+    password: postgres
+
+
 server:
   port: 8084
 
 grpc:
-  port: 9094
-  enable-reflection: true
+  server:
+    port: 9094
+    reflection-service-enabled: true
