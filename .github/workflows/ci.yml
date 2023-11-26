@@ -14,11 +14,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-<<<<<<< HEAD
-          java-version: '18'
-=======
           java-version: '17'
->>>>>>> template/master
           cache: 'gradle'
       - run: "./gradlew bootJar test --no-daemon --no-build-cache"
 
