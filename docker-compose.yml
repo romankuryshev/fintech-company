@@ -32,6 +32,8 @@ services:
     restart: no
     ports:
       - '8083:8083'
+    links:
+      - origination
 
 volumes:
   db:
