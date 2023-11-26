@@ -8,8 +8,8 @@ spring:
     show-sql: true
 
   datasource:
-    url: jdbc:postgresql://db:5432/fintech
-#    url: jdbc:postgresql://localhost:5433/fintech
+    url: jdbc:postgresql://db:5432/product_engine
+#    url: jdbc:postgresql://localhost:5433/product_engine
     username: postgres
     password: postgres
 
