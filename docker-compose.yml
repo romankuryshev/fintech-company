@@ -3,14 +3,14 @@ services:
   db:
     image: postgres:14.1-alpine
     restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./pg-init-scripts/create-multiple-databases.sql:/docker-entrypoint-initdb.d/create-multiple-databases.sql
     environment:
-      - POSTGRES_DB=fintech
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - '5433:5432'
-    volumes:
-      - db:/var/lib/postgresql/data
 
   product_engine:
     build: product-engine/
@@ -19,6 +19,19 @@ services:
       - '9090:9090'
     links:
       - db
+
+  origination:
+    build: origination/
+    restart: no
+    ports:
+      - '9094:9094'
+    links:
+      - db
+  api:
+    build: api/
+    restart: no
+    ports:
+      - '8083:8083'
 
 volumes:
   db:
