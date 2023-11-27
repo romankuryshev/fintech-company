@@ -21,6 +21,13 @@ public class ApplicationOperationService {
 
     private final ApplicationService applicationService;
 
+    /**
+     * Метод создает новую заявку на кредит.
+     * @param client  клиент
+     * @param requestDto  информация о заявке
+     * @return новая заявка
+     * @throws ApplicationAlreadyExistsException  если у клиента уже существует заявка с такими же данными
+     */
     public Application createApplication(Client client, CreateRequestDto requestDto) {
         List<Application> clientApplications = applicationService.findAllByClient(client);
 
@@ -43,6 +50,12 @@ public class ApplicationOperationService {
         return application;
     }
 
+
+    /**
+     * Метод удаляет заявку, если она ещё не была обработана.
+     * @param dto информация о заявке
+     * @throws ApplicationDeleteException  если такой заявки не существует, или она уже обработана.
+     */
     public void removeApplication(RemoveRequestDto dto) {
         Application application = applicationService.findById(dto.applicationId());
         if (application == null) {

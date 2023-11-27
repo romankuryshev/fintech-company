@@ -42,7 +42,7 @@ class OriginationClientServiceTest {
     }
 
     @Test
-    void givenInvalidDto_whenCreate_thenReturnNewApplicationId() {
+    void givenInvalidDto_whenCreate_thenThrowExceptionAndTrailsHasOldApplicationId() {
         ApplicationDto dto = createDto();
         Status status = ALREADY_EXISTS.withDescription("Already exists");
         Metadata metadata = new Metadata();
