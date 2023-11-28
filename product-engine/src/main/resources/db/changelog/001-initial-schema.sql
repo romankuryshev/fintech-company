@@ -42,7 +42,7 @@ CREATE TABLE payment_schedule
 
 CREATE TABLE payment_schedule_payment
 (
-    paymentId           bigserial   not null PRIMARY KEY,
+    payment_id          bigserial   not null PRIMARY KEY,
     payment_schedule_id bigserial   not null,
     status              varchar(30) not null check ( status in ('PAID', 'OVERDUE', 'FUTURE')),
     payment_date        date        not null,

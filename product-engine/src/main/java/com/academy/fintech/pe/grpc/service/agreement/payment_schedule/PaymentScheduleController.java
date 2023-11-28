@@ -6,22 +6,16 @@ import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.dto.Paymen
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.mapper.PaymentScheduleMapper;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
 @GrpcService
 public class PaymentScheduleController extends PaymentScheduleCreationServiceGrpc.PaymentScheduleCreationServiceImplBase {
 
-    private final static String agreementDoesNotExists = "error: The agreement does not exists";
-
-    private final static String ok = "ok";
-
     private final PaymentScheduleCreationService paymentScheduleCreationService;
 
     private final PaymentScheduleMapper mapper;
 
-    @Autowired
     public PaymentScheduleController(PaymentScheduleCreationService paymentScheduleCreationService, PaymentScheduleMapper mapper) {
         this.paymentScheduleCreationService = paymentScheduleCreationService;
         this.mapper = mapper;
@@ -30,14 +24,9 @@ public class PaymentScheduleController extends PaymentScheduleCreationServiceGrp
     @Override
     public void createSchedule(PaymentScheduleRequest request, StreamObserver<PaymentScheduleResponse> responseObserver) {
         PaymentScheduleRequestDto scheduleDto = mapper.toDto(request);
-        Optional<PaymentSchedule> schedule = paymentScheduleCreationService.createSchedule(scheduleDto);
 
-        PaymentScheduleResponse response;
-        if (schedule.isPresent()) {
-            response = mapper.toResponse(schedule.get(), ok);
-        } else {
-            response = mapper.toResponse(null, agreementDoesNotExists);
-        }
+        PaymentSchedule schedule = paymentScheduleCreationService.createSchedule(scheduleDto);
+        PaymentScheduleResponse response = mapper.toResponse(schedule);
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();

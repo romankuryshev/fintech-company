@@ -5,6 +5,8 @@ import com.academy.fintech.pe.core.service.agreement.db.agreement.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
 import com.academy.fintech.pe.core.service.agreement.db.product.Product;
 import com.academy.fintech.pe.core.service.agreement.db.product.ProductService;
+import com.academy.fintech.pe.core.service.agreement.exception.AgreementDoesNotExists;
+import com.academy.fintech.pe.core.service.agreement.exception.InvalidAgreementParametersException;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.dto.AgreementDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +22,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,10 +65,10 @@ public class AgreementCreationServiceTest {
         when(agreementService.create(dto, product)).thenReturn(new Agreement());
 
         // when
-        Agreement agreement = agreementCreationService.createAgreement(dto).orElse(null);
+        Agreement agreement = agreementCreationService.createAgreement(dto);
 
         // then
-        assertThat(agreement).isNotNull();
+        assertThat(agreement).isInstanceOf(Agreement.class);
     }
 
     @ParameterizedTest
@@ -76,10 +79,7 @@ public class AgreementCreationServiceTest {
         when(productService.getProduct(product.getCode())).thenReturn(product);
 
         // when
-        Agreement agreement = agreementCreationService.createAgreement(dto).orElse(null);
-
-        // then
-        assertThat(agreement).isNull();
+        assertThrows(InvalidAgreementParametersException.class, () -> agreementCreationService.createAgreement(dto));
     }
 
     private static Stream<Arguments> provideDtosForCreateAgreement() {

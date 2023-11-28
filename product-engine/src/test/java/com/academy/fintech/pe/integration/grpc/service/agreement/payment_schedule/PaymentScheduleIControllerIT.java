@@ -79,12 +79,9 @@ public class PaymentScheduleIControllerIT {
                 .setDisbursementDate("2024-02-29")
                 .build();
 
-        System.out.println(postgresSQLContainer.getUsername());
-        System.out.println(postgresSQLContainer.getPassword());
         PaymentScheduleResponse response = client.createSchedule(dto);
 
-        assertThat(response.getMessage()).isEqualTo("ok");
-        PaymentSchedule schedule = scheduleRepository.findByAgreement_IdAndVersion(UUID.fromString(response.getAgreementId()), response.getVersion()).orElse(null);
+        PaymentSchedule schedule = scheduleRepository.findByAgreementIdAndVersion(UUID.fromString(response.getAgreementId()), response.getVersion()).orElse(null);
         assertThat(schedule).isNotNull();
         assertThat(schedule.getPayments()).isNotNull();
         assertThat(schedule.getPayments().isEmpty()).isNotEqualTo(true);
@@ -96,7 +93,7 @@ public class PaymentScheduleIControllerIT {
                 .product(product)
                 .clientId(UUID.fromString("00000000-0000-0000-0000-000000000002"))
                 .interest(BigDecimal.valueOf(10))
-                .term(12)
+                .termInMonths(12)
                 .principalAmount(BigDecimal.valueOf(65000))
                 .originationAmount(BigDecimal.valueOf(5000))
                 .status(AgreementStatus.NEW)

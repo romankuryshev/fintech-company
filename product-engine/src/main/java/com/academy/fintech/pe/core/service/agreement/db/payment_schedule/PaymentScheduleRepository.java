@@ -11,5 +11,5 @@ import java.util.UUID;
 @Repository
 public interface PaymentScheduleRepository extends JpaRepository<PaymentSchedule, Long> {
     Integer countPaymentScheduleByAgreement(Agreement agreement);
-    Optional<PaymentSchedule> findByAgreement_IdAndVersion(UUID AgreementId, int version);
+    Optional<PaymentSchedule> findByAgreementIdAndVersion(UUID AgreementId, int version);
 }

@@ -8,8 +8,9 @@ import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPayment
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.PaymentSchedule;
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.PaymentScheduleService;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementStatus;
+import com.academy.fintech.pe.core.service.agreement.exception.AgreementDoesNotExists;
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.dto.PaymentScheduleRequestDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ import java.util.Optional;
  * {@link #AMOUNT_SCALE} - Количество цифр после запятой при округлении для итоговых сумм.
  */
 @Service
+@Slf4j
 public class PaymentScheduleCreationService {
 
     private static final int COUNT_PAYMENTS_PER_YEAR = 12;
@@ -42,7 +44,6 @@ public class PaymentScheduleCreationService {
 
     private final AgreementService agreementService;
 
-    @Autowired
     public PaymentScheduleCreationService(PaymentScheduleService paymentScheduleService, LoanPaymentService loanPaymentService, AgreementService agreementService) {
         this.paymentScheduleService = paymentScheduleService;
         this.loanPaymentService = loanPaymentService;
@@ -50,16 +51,18 @@ public class PaymentScheduleCreationService {
     }
 
     /**
-     * Метод новое расписание платежей
+     * Метод создает новое расписание платежей
      * @param scheduleDto
      * @return Optional {@code null} если создание невозможно, {@link PaymentSchedule} иначе
      */
     @Transactional
-    public Optional<PaymentSchedule> createSchedule(PaymentScheduleRequestDto scheduleDto) {
+    public PaymentSchedule createSchedule(PaymentScheduleRequestDto scheduleDto) {
         Agreement agreement = agreementService.getById(scheduleDto.agreementId());
         if (agreement == null) {
-            return Optional.empty();
+            log.error("Agreement does not exists. Id - " + scheduleDto.agreementId());
+            throw new AgreementDoesNotExists("Agreement with id - " + scheduleDto.agreementId() + " does not exists");
         }
+
         PaymentSchedule schedule = paymentScheduleService.createNewSchedule(agreement);
         List<LoanPayment> payments = createPayments(agreement, schedule, scheduleDto.disbursementDate());
 
@@ -70,7 +73,7 @@ public class PaymentScheduleCreationService {
         loanPaymentService.saveAll(payments);
         paymentScheduleService.save(schedule);
         agreementService.save(agreement);
-        return Optional.of(schedule);
+        return schedule;
     }
 
     /**
@@ -79,15 +82,24 @@ public class PaymentScheduleCreationService {
      * @param periodPayment  ежемесячный платеж
      * @return List<BigDecimal>  платежи по процентам для данного договора
      */
-    private List<BigDecimal> createInterestPayments(Agreement agreement, BigDecimal periodPayment) {
+    private List<BigDecimal> getCalculatedInterestPayments(Agreement agreement, BigDecimal periodPayment) {
         List<BigDecimal> interestPayments = new ArrayList<>();
-        BigDecimal periodicInterest = agreement.getInterest()
-                .divide(BigDecimal.valueOf(100))
-                .divide(BigDecimal.valueOf(COUNT_PAYMENTS_PER_YEAR), DIVIDE_SCALE, RoundingMode.HALF_UP);
 
-        for (int i = 0; i < agreement.getTerm(); i++) {
-            interestPayments.add(IPMT(periodicInterest, periodPayment, agreement.getPrincipalAmount(), i));
+        if (agreement.getInterest().equals(BigDecimal.ZERO)) {
+            for (int i = 0; i < agreement.getTermInMonths(); i++) {
+                interestPayments.add(BigDecimal.ZERO);
+            }
+
+        } else {
+            BigDecimal periodicInterest = agreement.getInterest()
+                    .divide(BigDecimal.valueOf(100))
+                    .divide(BigDecimal.valueOf(COUNT_PAYMENTS_PER_YEAR), DIVIDE_SCALE, RoundingMode.HALF_UP);
+
+            for (int i = 0; i < agreement.getTermInMonths(); i++) {
+                interestPayments.add(IPMT(periodicInterest, periodPayment, agreement.getPrincipalAmount(), i));
+            }
         }
+
         return interestPayments;
     }
 
@@ -107,12 +119,12 @@ public class PaymentScheduleCreationService {
 
     private List<LoanPayment> createPayments(Agreement agreement, PaymentSchedule schedule, LocalDate disbursementDate) {
         BigDecimal periodPayment = PMT(agreement);
-        List<BigDecimal> interestPayments = createInterestPayments(agreement, periodPayment);
+        List<BigDecimal> interestPayments = getCalculatedInterestPayments(agreement, periodPayment);
         List<BigDecimal> principalPayments = createPrincipalPayments(interestPayments, periodPayment);
 
         List<LoanPayment> payments = new ArrayList<>();
         LocalDate nextPaymentDate = disbursementDate.plusMonths(1);
-        for (int i = 0; i < agreement.getTerm(); i++) {
+        for (int i = 0; i < agreement.getTermInMonths(); i++) {
             var payment = LoanPayment.builder()
                     .paymentSchedule(schedule)
                     .status(LoanPaymentStatus.FUTURE)
@@ -135,12 +147,18 @@ public class PaymentScheduleCreationService {
      * @return ежемесячный платеж
      */
     private BigDecimal PMT(Agreement agreement) {
+
+        if (agreement.getInterest().equals(BigDecimal.ZERO)) {
+            return agreement.getPrincipalAmount()
+                    .divide(BigDecimal.valueOf(agreement.getTermInMonths()), DIVIDE_SCALE, RoundingMode.HALF_UP);
+        }
+
         BigDecimal periodicInterest = agreement.getInterest()
                 .divide(BigDecimal.valueOf(100))
                 .divide(BigDecimal.valueOf(COUNT_PAYMENTS_PER_YEAR), DIVIDE_SCALE, RoundingMode.HALF_UP);
 
         BigDecimal coefficient = BigDecimal.ONE.add(periodicInterest)
-                .pow(agreement.getTerm());
+                .pow(agreement.getTermInMonths());
 
         BigDecimal periodPayment = agreement.getPrincipalAmount()
                 .multiply(periodicInterest)

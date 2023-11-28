@@ -5,6 +5,7 @@ import com.academy.fintech.pe.core.service.agreement.db.agreement.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPayment;
 import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPaymentStatus;
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.PaymentSchedule;
+import com.academy.fintech.pe.core.service.agreement.exception.AgreementDoesNotExists;
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.PaymentScheduleController;
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.PaymentScheduleRequest;
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.PaymentScheduleResponse;
@@ -13,6 +14,8 @@ import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.mapper.Loa
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.mapper.LoanPaymentMapperImpl;
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.mapper.PaymentScheduleMapper;
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.mapper.PaymentScheduleMapperImpl;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import io.grpc.internal.testing.StreamRecorder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,6 +34,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -63,7 +67,7 @@ public class PaymentScheduleControllerTest {
         PaymentSchedule schedule = new PaymentSchedule(agreement, 1);
         schedule.setPayments(createLoanPayments(schedule));
         StreamRecorder<PaymentScheduleResponse> responseObserver = StreamRecorder.create();
-        when(creationService.createSchedule(any(PaymentScheduleRequestDto.class))).thenReturn(Optional.of(schedule));
+        when(creationService.createSchedule(any(PaymentScheduleRequestDto.class))).thenReturn(schedule);
 
         // when
         controller.createSchedule(request, responseObserver);
@@ -77,7 +81,6 @@ public class PaymentScheduleControllerTest {
         PaymentScheduleResponse response = results.get(0);
         assertThat(response.getPaymentsCount()).isEqualTo(schedule.getPayments().size());
         assertThat(response.getAgreementId()).isEqualTo("00000000-0000-0000-0000-000000000002");
-        assertThat(response.getMessage()).isEqualTo("ok");
     }
 
     @Test
@@ -87,19 +90,10 @@ public class PaymentScheduleControllerTest {
                 .setDisbursementDate("2023-12-31")
                 .build();
         StreamRecorder<PaymentScheduleResponse> responseObserver = StreamRecorder.create();
-        when(creationService.createSchedule(any(PaymentScheduleRequestDto.class))).thenReturn(Optional.empty());
+        when(creationService.createSchedule(any(PaymentScheduleRequestDto.class))).thenThrow(new AgreementDoesNotExists("Agreement does not exists"));
 
-        controller.createSchedule(request, responseObserver);
-        if (!responseObserver.awaitCompletion(5, TimeUnit.SECONDS)) {
-            Assertions.fail("The call did not terminate in time");
-        }
 
-        List<PaymentScheduleResponse> results = responseObserver.getValues();
-        assertThat(results.size()).isEqualTo(1);
-        PaymentScheduleResponse response = results.get(0);
-        assertThat(response.getPaymentsCount()).isEqualTo(0);
-        assertThat(response.getAgreementId()).isEqualTo("");
-        assertThat(response.getMessage()).isEqualTo("error: The agreement does not exists");
+        AgreementDoesNotExists exception = assertThrows(AgreementDoesNotExists.class, () -> controller.createSchedule(request, responseObserver));
     }
 
 
