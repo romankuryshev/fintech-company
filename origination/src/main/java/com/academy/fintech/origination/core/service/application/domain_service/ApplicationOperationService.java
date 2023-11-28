@@ -7,12 +7,12 @@ import com.academy.fintech.origination.core.service.application.db.client.Client
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationAlreadyExistsException;
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationDeleteException;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CreateRequestDto;
-import com.academy.fintech.origination.grpc.service.application.v1.dto.RemoveRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -35,7 +35,7 @@ public class ApplicationOperationService {
             if (application.getStatus() == ApplicationStatus.NEW &&
                     application.getRequestDisbursementAmount().equals(requestDto.disbursementAmount())) {
 
-                log.debug("Application already exists.");
+                log.error("Application already exists.");
                 throw new ApplicationAlreadyExistsException("Application already exists.", application.getId());
             }
         }
@@ -50,24 +50,19 @@ public class ApplicationOperationService {
         return application;
     }
 
-
-    /**
-     * Метод удаляет заявку, если она ещё не была обработана.
-     * @param dto информация о заявке
-     * @throws ApplicationDeleteException  если такой заявки не существует, или она уже обработана.
-     */
-    public void removeApplication(RemoveRequestDto dto) {
-        Application application = applicationService.findById(dto.applicationId());
+    public void setApplicationStatus(UUID applicationId, ApplicationStatus status) {
+        Application application = applicationService.findById(applicationId);
         if (application == null) {
-            log.debug("application doesn't exists. id - " + dto.applicationId());
-            throw new ApplicationDeleteException("Application with id " + dto.applicationId() + " doesn't exists.");
+            log.error("application doesn't exists. id - " + applicationId);
+            throw new ApplicationDeleteException("Application with id " + applicationId + " doesn't exists.");
         }
 
         if (application.getStatus() != ApplicationStatus.NEW && application.getStatus() != ApplicationStatus.SCORING) {
-            log.debug("application with id - " + application.getId() + " and status - " + application.getStatus());
-            throw new ApplicationDeleteException("Application with id " + dto.applicationId() + " already processed.");
+            log.error("application with id - " + applicationId + " and status - " + application.getStatus());
+            throw new ApplicationDeleteException("Application with id " + applicationId + " already processed.");
         }
 
-        applicationService.deleteById(dto.applicationId());
+        application.setStatus(status);
+        applicationService.save(application);
     }
 }

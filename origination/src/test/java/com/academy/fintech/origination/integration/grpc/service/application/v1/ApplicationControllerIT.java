@@ -91,18 +91,18 @@ public class ApplicationControllerIT {
                 .latName("kuryshev")
                 .email("roman1@mail.ru")
                 .salary(BigDecimal.valueOf(30000))
-                .build();;
+                .build();
         clientService.save(dbClient);
         Application application = createApplication(dbClient);
         applicationService.save(application);
-        RemoveRequest request = RemoveRequest.newBuilder()
+        CancelRequest request = CancelRequest.newBuilder()
                 .setApplicationId(application.getId().toString())
                 .build();
 
-        RemoveResponse response = client.remove(request);
+        CancelResponse response = client.remove(request);
 
         assertThat(response.getSuccess()).isEqualTo(true);
-        assertThat(applicationService.findById(application.getId())).isEqualTo(null);
+        assertThat(applicationService.findById(application.getId()).getStatus()).isEqualTo(ApplicationStatus.CANCELED);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ApplicationControllerIT {
                 .latName("kuryshev")
                 .email("roman2@mail.ru")
                 .salary(BigDecimal.valueOf(30000))
-                .build();;
+                .build();
         clientService.save(dbClient);
         Application application = createApplication(dbClient);
         applicationService.save(application);
@@ -134,7 +134,7 @@ public class ApplicationControllerIT {
 
     @Test
     void givenInvalidApplicationId_whenRemoveApplication_thenThrowsException() {
-        RemoveRequest request = RemoveRequest.newBuilder()
+        CancelRequest request = CancelRequest.newBuilder()
                 .setApplicationId("00000000-0000-0000-0000-000000000001")
                 .build();
 

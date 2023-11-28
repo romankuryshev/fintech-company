@@ -8,7 +8,7 @@ import com.academy.fintech.origination.core.service.application.domain_service.A
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationAlreadyExistsException;
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationDeleteException;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CreateRequestDto;
-import com.academy.fintech.origination.grpc.service.application.v1.dto.RemoveRequestDto;
+import com.academy.fintech.origination.grpc.service.application.v1.dto.CancelRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -89,9 +89,8 @@ class ApplicationOperationServiceTest {
                 .build();
         when(applicationService.findAllByClient(client)).thenReturn(List.of(existedApplication));
 
-        ApplicationAlreadyExistsException exception = assertThrows(ApplicationAlreadyExistsException.class, () -> {
-            applicationOperationService.createApplication(client, dto);
-        });
+        ApplicationAlreadyExistsException exception = assertThrows(ApplicationAlreadyExistsException.class, () ->
+                applicationOperationService.createApplication(client, dto));
 
         assertThat(exception.getApplicationId()).isEqualTo(existedApplication.getId());
     }
@@ -122,7 +121,7 @@ class ApplicationOperationServiceTest {
     @ParameterizedTest
     @MethodSource({"provideStatusesForDeleteApplication"})
     void givenExistedId_whenRemoveApplication_thenApplicationRemoved(ApplicationStatus status) {
-        RemoveRequestDto dto = new RemoveRequestDto(UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        CancelRequestDto dto = new CancelRequestDto(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Application application = Application.builder()
                 .id(UUID.fromString("00000000-0000-0000-0000-000000000001"))
                 .status(status)
@@ -130,19 +129,17 @@ class ApplicationOperationServiceTest {
                 .build();
         when(applicationService.findById(dto.applicationId())).thenReturn(application);
 
-        assertThrows(ApplicationDeleteException.class, () -> {
-            applicationOperationService.removeApplication(dto);
-        });
+        assertThrows(ApplicationDeleteException.class, () ->
+                applicationOperationService.setApplicationStatus(dto.applicationId(), ApplicationStatus.CANCELED));
     }
 
     @Test
     void givenNotExistedId_whenRemoveApplication_thenThrowsException() {
-        RemoveRequestDto dto = new RemoveRequestDto(UUID.fromString("00000000-0000-0000-0000-000000000002"));
+        CancelRequestDto dto = new CancelRequestDto(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         when(applicationService.findById(dto.applicationId())).thenReturn(null);
 
-        assertThrows(ApplicationDeleteException.class, () -> {
-            applicationOperationService.removeApplication(dto);
-        });
+        assertThrows(ApplicationDeleteException.class, () ->
+                applicationOperationService.setApplicationStatus(dto.applicationId(), ApplicationStatus.CANCELED));
     }
 
 

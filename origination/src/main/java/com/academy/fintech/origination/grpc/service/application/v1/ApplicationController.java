@@ -3,9 +3,9 @@ package com.academy.fintech.origination.grpc.service.application.v1;
 import com.academy.fintech.application.*;
 import com.academy.fintech.origination.core.service.application.ApplicationRequestService;
 import com.academy.fintech.origination.core.service.application.db.application.Application;
+import com.academy.fintech.origination.grpc.service.application.v1.dto.CancelRequestDto;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.ClientDto;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CreateRequestDto;
-import com.academy.fintech.origination.grpc.service.application.v1.dto.RemoveRequestDto;
 import com.academy.fintech.origination.grpc.service.application.v1.mapper.ApplicationMapper;
 import com.academy.fintech.origination.grpc.service.application.v1.mapper.ClientMapper;
 import io.grpc.stub.StreamObserver;
@@ -37,10 +37,10 @@ public class ApplicationController extends ApplicationServiceGrpc.ApplicationSer
     }
 
     @Override
-    public void remove(RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
-        RemoveRequestDto dto = applicationMapper.toDto(request);
-        applicationRequestService.removeApplication(dto);
-        responseObserver.onNext(RemoveResponse.newBuilder()
+    public void remove(CancelRequest request, StreamObserver<CancelResponse> responseObserver) {
+        CancelRequestDto dto = applicationMapper.toDto(request);
+        applicationRequestService.cancelApplication(dto);
+        responseObserver.onNext(CancelResponse.newBuilder()
                 .setSuccess(true)
                 .build());
         responseObserver.onCompleted();

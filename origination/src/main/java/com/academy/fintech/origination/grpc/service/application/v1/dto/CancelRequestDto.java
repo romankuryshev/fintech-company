@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public record RemoveRequestDto(
+public record CancelRequestDto(
         @NotNull
         UUID applicationId
 ) {
