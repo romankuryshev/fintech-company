@@ -68,7 +68,7 @@ public class AgreementServiceTest {
         assertEquals(dto.clientId(), actualAgreement.getClientId());
         assertEquals(product, actualAgreement.getProduct());
         assertEquals(dto.interest(), actualAgreement.getInterest());
-        assertEquals(dto.term(), actualAgreement.getTerm());
+        assertEquals(dto.term(), actualAgreement.getTermInMonths());
         assertEquals(dto.principalAmount(), actualAgreement.getPrincipalAmount());
         assertEquals(dto.originationAmount(), actualAgreement.getOriginationAmount());
     }

@@ -10,6 +10,7 @@ import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPayment
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.PaymentSchedule;
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.PaymentScheduleService;
 import com.academy.fintech.pe.core.service.agreement.db.product.Product;
+import com.academy.fintech.pe.core.service.agreement.exception.AgreementDoesNotExists;
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.dto.PaymentScheduleRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
@@ -59,25 +60,19 @@ public class PaymentScheduleCreationServiceTest {
         when(agreementService.save(any())).thenReturn(null);
 
         // when
-        PaymentSchedule actualSchedule = paymentScheduleCreationService.createSchedule(dto).orElse(null);
+        PaymentSchedule actualSchedule = paymentScheduleCreationService.createSchedule(dto);
 
         // then
-        assertThat(actualSchedule).isNotNull();
         assert actualSchedule != null;
         assertIterableEquals(actualSchedule.getPayments(), expectedPayments);
     }
 
     @Test
     void givenInvalidAgreementId_whenCreateSchedule_thenReturnNull() {
-        // given
         var dto = new PaymentScheduleRequestDto(UUID.fromString("00000000-0000-0000-0000-000000000001"), LocalDate.parse("2023-12-31"));
         when(agreementService.getById(dto.agreementId())).thenReturn(null);
 
-        // when
-        PaymentSchedule schedule = paymentScheduleCreationService.createSchedule(dto).orElse(null);
-
-        // then
-        assertThat(schedule).isNull();
+        assertThrows(AgreementDoesNotExists.class, () -> paymentScheduleCreationService.createSchedule(dto));
     }
 
     private Product createProduct() {
@@ -100,7 +95,7 @@ public class PaymentScheduleCreationServiceTest {
                 .product(product)
                 .clientId(UUID.fromString("00000000-0000-0000-0000-000000000002"))
                 .interest(BigDecimal.valueOf(10))
-                .term(12)
+                .termInMonths(12)
                 .principalAmount(BigDecimal.valueOf(65000))
                 .originationAmount(BigDecimal.valueOf(5000))
                 .status(AgreementStatus.NEW)

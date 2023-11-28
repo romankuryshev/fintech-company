@@ -1,6 +1,5 @@
 package com.academy.fintech.pe.core.service.agreement.db.loan_payment;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +9,6 @@ public class LoanPaymentService {
 
     private final LoanPaymentRepository loanPaymentRepository;
 
-    @Autowired
     public LoanPaymentService(LoanPaymentRepository loanPaymentRepository) {
         this.loanPaymentRepository = loanPaymentRepository;
     }
