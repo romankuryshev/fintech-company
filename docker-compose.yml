@@ -8,9 +8,17 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - '5432:5432'
+      - '5433:5432'
     volumes:
       - db:/var/lib/postgresql/data
+
+  product_engine:
+    build: product-engine/
+    restart: no
+    ports:
+      - '9090:9090'
+    links:
+      - db
 
 volumes:
   db:
