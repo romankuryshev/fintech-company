@@ -1,0 +1,42 @@
+plugins {
+    alias(libs.plugins.protobuf.plugin)
+    alias(libs.plugins.spring.plugin)
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.24.4'
+    }
+
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.59.0'
+        }
+    }
+
+    generateProtoTasks {
+        all()*.plugins {grpc{}}
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.academy.fintech.scoring.Application'
+    }
+}
+
+
+dependencies {
+    implementation libs.spring.validator
+    implementation libs.spring.grpc
+
+    implementation libs.javax.annotation
+
+    testImplementation libs.spring.test
+    testImplementation libs.grpc.testing
+
+    testImplementation libs.testcontainres.jupiter
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstructAnnotationProcessor
+}

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package com.academy.fintech.scoring.application_processing;
+
+option java_multiple_files = true;
+
+service ScoringDataService{
+  rpc getProductInfo(ProductRequest) returns (ProductResponse);
+  rpc getClientInfo(ClientStatisticRequest) returns (ClientStatisticResponse);
+  rpc getPaymentAmount(AdvancedPaymentRequest) returns (AdvancedPaymentResponse);
+}
+
+message ProductRequest {
+  string productCode = 1;
+}
+
+message ProductResponse {
+  string code = 1;
+  int32 minTermInMonths = 2;
+  int32 maxTermInMonths = 3;
+  string minPrincipalAmount = 4;
+  string maxPrincipalAmount = 5;
+  string minInterest = 6;
+  string maxInterest = 7;
+  string minOriginationAmount = 8;
+  string maxOriginationAmount = 9;
+}
+
+message ClientStatisticRequest {
+  string clientId = 1;
+}
+
+message ClientStatisticResponse {
+  int32 countProducts = 1;
+  int32 countOverdueProducts = 2;
+}
+
+message AdvancedPaymentRequest {
+  string interest = 1;
+  int32 term = 2;
+  string disbursementAmount = 3;
+}
+
+message AdvancedPaymentResponse {
+  string paymentAmount = 1;
+}
