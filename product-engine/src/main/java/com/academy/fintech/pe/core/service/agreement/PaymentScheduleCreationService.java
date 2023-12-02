@@ -10,6 +10,7 @@ import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.Payment
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementStatus;
 import com.academy.fintech.pe.core.service.agreement.exception.AgreementDoesNotExists;
 import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.dto.PaymentScheduleRequestDto;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,6 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -30,6 +30,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
+@AllArgsConstructor
 public class PaymentScheduleCreationService {
 
     private static final int COUNT_PAYMENTS_PER_YEAR = 12;
@@ -43,12 +44,6 @@ public class PaymentScheduleCreationService {
     private final LoanPaymentService loanPaymentService;
 
     private final AgreementService agreementService;
-
-    public PaymentScheduleCreationService(PaymentScheduleService paymentScheduleService, LoanPaymentService loanPaymentService, AgreementService agreementService) {
-        this.paymentScheduleService = paymentScheduleService;
-        this.loanPaymentService = loanPaymentService;
-        this.agreementService = agreementService;
-    }
 
     /**
      * Метод создает новое расписание платежей
@@ -64,7 +59,7 @@ public class PaymentScheduleCreationService {
         }
 
         PaymentSchedule schedule = paymentScheduleService.createNewSchedule(agreement);
-        List<LoanPayment> payments = createPayments(agreement, schedule, scheduleDto.disbursementDate());
+        List<LoanPayment> payments = getCalculatedPayments(agreement, schedule, scheduleDto.disbursementDate());
 
         schedule.setPayments(payments);
         agreement.setStatus(AgreementStatus.ACTIVE);
@@ -109,7 +104,7 @@ public class PaymentScheduleCreationService {
      * @param periodPayment  ежемесячный платеж
      * @return List<BigDecimal>  платежи для погашения основной суммы
      */
-    private List<BigDecimal> createPrincipalPayments(List<BigDecimal> interestPayments, BigDecimal periodPayment) {
+    private List<BigDecimal> getCalculatedPrincipalPayments(List<BigDecimal> interestPayments, BigDecimal periodPayment) {
         List<BigDecimal> principalPayments = new ArrayList<>();
         for (BigDecimal interestPayment : interestPayments) {
             principalPayments.add(PPMT(periodPayment, interestPayment));
@@ -117,10 +112,10 @@ public class PaymentScheduleCreationService {
         return principalPayments;
     }
 
-    private List<LoanPayment> createPayments(Agreement agreement, PaymentSchedule schedule, LocalDate disbursementDate) {
+    private List<LoanPayment> getCalculatedPayments(Agreement agreement, PaymentSchedule schedule, LocalDate disbursementDate) {
         BigDecimal periodPayment = PMT(agreement);
         List<BigDecimal> interestPayments = getCalculatedInterestPayments(agreement, periodPayment);
-        List<BigDecimal> principalPayments = createPrincipalPayments(interestPayments, periodPayment);
+        List<BigDecimal> principalPayments = getCalculatedPrincipalPayments(interestPayments, periodPayment);
 
         List<LoanPayment> payments = new ArrayList<>();
         LocalDate nextPaymentDate = disbursementDate.plusMonths(1);
