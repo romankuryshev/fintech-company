@@ -7,15 +7,16 @@ import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.dto.Paymen
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", uses = LoanPaymentMapper.class,
-        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
+        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PaymentScheduleMapper {
 
     PaymentScheduleRequestDto toDto(PaymentScheduleRequest request);
 
     @Mapping(target = "paymentsList", source = "paymentSchedule.payments")
-    @Mapping(target = "message", source = "message")
     @Mapping(target = "agreementId", source = "paymentSchedule.agreement.id")
-    PaymentScheduleResponse toResponse(PaymentSchedule paymentSchedule, String message);
+    PaymentScheduleResponse toResponse(PaymentSchedule paymentSchedule);
 }

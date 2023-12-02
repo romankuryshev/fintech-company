@@ -8,5 +8,4 @@ import java.util.UUID;
 
 @Repository
 public interface AgreementRepository extends JpaRepository<Agreement, UUID> {
-    Optional<Agreement> findById(UUID id);
 }

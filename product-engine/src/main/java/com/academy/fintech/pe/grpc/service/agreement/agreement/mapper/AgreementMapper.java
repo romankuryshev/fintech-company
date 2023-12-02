@@ -6,16 +6,16 @@ import com.academy.fintech.pe.grpc.service.agreement.agreement.AgreementResponse
 import com.academy.fintech.pe.grpc.service.agreement.agreement.dto.AgreementDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 import java.math.BigDecimal;
 
-@Mapper(componentModel = "spring", imports = BigDecimal.class)
+@Mapper(componentModel = "spring", imports = BigDecimal.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AgreementMapper {
     @Mapping(target = "principalAmount",  expression = "java( new BigDecimal(request.getOriginationAmount())" +
             ".add(new BigDecimal(request.getDisbursementAmount())))")
     AgreementDto requestToDto(AgreementRequest request);
 
-    @Mapping(target = "message", source = "message")
 
-    AgreementResponse toResponse(Agreement agreement, String message);
+    AgreementResponse toResponse(Agreement agreement);
 }

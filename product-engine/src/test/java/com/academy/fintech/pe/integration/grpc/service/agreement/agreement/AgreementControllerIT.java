@@ -5,6 +5,8 @@ import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementRepos
 import com.academy.fintech.pe.grpc.service.agreement.agreement.AgreementCreationServiceGrpc;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.AgreementRequest;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.AgreementResponse;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(
         properties = {
@@ -61,12 +64,11 @@ class AgreementControllerIT {
         AgreementResponse response = client.create(request);
 
         Agreement savedAgreement = agreementRepository.findById(UUID.fromString(response.getId())).orElse(null);
-        assertThat(response.getMessage()).isEqualTo("ok");
         assertThat(savedAgreement).isNotNull();
         assertThat(savedAgreement.getProduct().getCode()).isEqualTo("CL1.0");
         assertThat(savedAgreement.getClientId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         assertThat(savedAgreement.getInterest()).isEqualTo("13");
-        assertThat(savedAgreement.getTerm()).isEqualTo(12);
+        assertThat(savedAgreement.getTermInMonths()).isEqualTo(12);
         assertThat(savedAgreement.getOriginationAmount()).isEqualTo("2000");
         assertThat(savedAgreement.getPrincipalAmount()).isEqualTo("52000");
     }
@@ -83,9 +85,7 @@ class AgreementControllerIT {
                 .setOriginationAmount("2000")
                 .build();
 
-        AgreementResponse response = client.create(request);
-
-        assertThat(response.getMessage()).isEqualTo("error: The agreement does not meet the conditions.");
-        assertThat(response.getId()).isEqualTo("");
+        StatusRuntimeException exception = assertThrows(StatusRuntimeException.class, () -> client.create(request));
+        assertThat(exception.getStatus().getCode()).isEqualTo(Status.INVALID_ARGUMENT.getCode());
     }
 }
