@@ -27,4 +27,7 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
+    public List<Application> findAllApplicationsByStatus(ApplicationStatus status) {
+        return applicationRepository.findAllByStatus(status);
+    }
 }

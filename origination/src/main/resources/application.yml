@@ -9,7 +9,7 @@ spring:
 
   datasource:
     url: jdbc:postgresql://db:5432/origination
-#    url: jdbc:postgresql://localhost:5434/origination
+#    url: jdbc:postgresql://localhost:5433/origination
     username: postgres
     password: postgres
 
@@ -21,3 +21,11 @@ grpc:
   server:
     port: 9094
     reflection-service-enabled: true
+
+origination:
+  client:
+    scoring:
+      grpc:
+        host: scoring
+#        host: localhost
+        port: 9095
