@@ -22,6 +22,7 @@ dependencies {
     implementation libs.spring.jpa
     implementation libs.spring.grpc
     implementation libs.spring.validator
+    implementation libs.spring.email
 
     implementation libs.protobuf.java.util
     implementation libs.grpc.protobuf

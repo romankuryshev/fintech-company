@@ -16,6 +16,7 @@ spring-actuator = { module = "org.springframework.boot:spring-boot-starter-actua
 spring-validator = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
 spring-grpc = {module = "net.devh:grpc-spring-boot-starter", version = "2.15.0.RELEASE"}
+spring-email = {module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot"}
 
 # grpc
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
