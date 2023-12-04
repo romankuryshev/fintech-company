@@ -26,6 +26,7 @@ services:
     ports:
       - '9094:9094'
     links:
+      - scoring
       - db
 
   api:
