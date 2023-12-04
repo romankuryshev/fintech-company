@@ -6,6 +6,7 @@ import com.academy.fintech.scoring.application_processing.ProcessApplicationRequ
 import com.academy.fintech.scoring.application_processing.ProcessApplicationResponse;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,11 @@ public class ScoringGrpcClient {
     }
 
     public ProcessApplicationResponse processApplication(ProcessApplicationRequest request) {
-        return stub.processApplication(request);
+        try {
+            return stub.processApplication(request);
+        } catch (StatusRuntimeException e) {
+            log.error("Got error by request{} ", request);
+            throw e;
+        }
     }
 }

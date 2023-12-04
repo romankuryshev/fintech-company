@@ -6,11 +6,9 @@ import com.academy.fintech.origination.core.service.application.db.application.A
 import com.academy.fintech.scoring.application_processing.ProcessApplicationRequest;
 import com.academy.fintech.scoring.application_processing.ProcessApplicationResponse;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 @AllArgsConstructor
 public class ScoringClientService {
 
