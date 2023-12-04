@@ -10,8 +10,10 @@ import com.academy.fintech.scoring.core.pe.client.grpc.ProductEngineGrpcClient;
 import com.academy.fintech.scoring.core.pe.client.mapper.ClientAgreementMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.AdvancedPaymentMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.ProductMapper;
+import com.academy.fintech.scoring.core.processing.exception.ProductDoesNotExists;
 import com.academy.fintech.scoring.core.processing.model.AgreementDto;
 import com.academy.fintech.scoring.core.processing.model.Product;
+import io.grpc.StatusRuntimeException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,10 +37,13 @@ public class ProductEngineClientService {
 
     public Product getProduct(String productCode) {
         ProductRequest request = productMapper.toRequest(productCode);
-
-        ProductResponse response = productEngineGrpcClient.getProduct(request);
-
-        return productMapper.toModel(response);
+        try {
+            ProductResponse response = productEngineGrpcClient.getProduct(request);
+            return productMapper.toModel(response);
+        } catch (StatusRuntimeException e) {
+            log.error("Product does not exists code {}", request);
+            throw new ProductDoesNotExists("Product with code " + productCode + " does not exists");
+        }
     }
 
     public List<AgreementDto> getClientAgreements(UUID clientId) {

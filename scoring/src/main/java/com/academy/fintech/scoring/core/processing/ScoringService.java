@@ -1,6 +1,7 @@
 package com.academy.fintech.scoring.core.processing;
 
 import com.academy.fintech.scoring.core.pe.client.ProductEngineClientService;
+import com.academy.fintech.scoring.core.processing.exception.ProductDoesNotExists;
 import com.academy.fintech.scoring.core.processing.model.AgreementDto;
 import com.academy.fintech.scoring.core.processing.model.ProcessingResult;
 import com.academy.fintech.scoring.core.processing.model.Product;
@@ -35,7 +36,13 @@ public class ScoringService {
     private final ProductEngineClientService productEngineClientService;
 
     public ProcessingResult process(ProcessApplicationRequestDto requestDto) {
-        Product product = productEngineClientService.getProduct(PRODUCT_CODE);
+        Product product;
+        try {
+            product = productEngineClientService.getProduct(PRODUCT_CODE);
+        } catch (ProductDoesNotExists e) {
+            return ProcessingResult.CANCELED;
+        }
+
         List<AgreementDto> agreements = productEngineClientService.getClientAgreements(requestDto.clientId());
         BigDecimal paymentAmount = productEngineClientService.getPaymentAmount(INTEREST, TERM_IN_MONTHS, requestDto.disbursementAmount());
 
