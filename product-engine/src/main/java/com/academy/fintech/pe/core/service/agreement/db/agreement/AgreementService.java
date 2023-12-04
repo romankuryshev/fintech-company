@@ -5,6 +5,7 @@ import com.academy.fintech.pe.grpc.service.agreement.agreement.dto.AgreementDto;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +36,10 @@ public class AgreementService {
     public Agreement getById(UUID agreementId) {
         Optional<Agreement> agreement = agreementRepository.findById(agreementId);
         return agreement.orElse(null);
+    }
+
+    public List<Agreement> getAllAgreementsByClientId(UUID clientId) {
+        return agreementRepository.findAllByClientId(clientId);
     }
 
     public Agreement save(Agreement agreement) {
