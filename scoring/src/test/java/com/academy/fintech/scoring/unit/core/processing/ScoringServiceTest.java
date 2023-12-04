@@ -34,15 +34,15 @@ class ScoringServiceTest {
     @Test
     void givenValidRequestDto_whenProcess_thenReturnAccepted() {
         List<AgreementDto> agreementDto = List.of(new AgreementDto(UUID.randomUUID(), LocalDate.parse("2023-12-05")),
-                new AgreementDto(UUID.randomUUID(), LocalDate.parse("2023-11-30")));
+                new AgreementDto(UUID.randomUUID(), LocalDate.parse(LocalDate.now().minusDays(5).toString())));
         ProcessApplicationRequestDto requestDto = ProcessApplicationRequestDto.builder()
                 .clientId(UUID.fromString("00000000-0000-0000-0000-000000000001"))
                 .applicationId(UUID.fromString("00000000-0000-0000-0000-000000000002"))
                 .clientSalary(BigDecimal.valueOf(60_000))
                 .disbursementAmount(BigDecimal.valueOf(100_000))
                 .build();
-        when(productEngineClientService.getProductInfo("CL1.0")).thenReturn(createProduct());
-        when(productEngineClientService.getClientStatistic(any(UUID.class))).thenReturn(agreementDto);
+        when(productEngineClientService.getProduct("CL1.0")).thenReturn(createProduct());
+        when(productEngineClientService.getClientAgreements(any(UUID.class))).thenReturn(agreementDto);
         when(productEngineClientService.getPaymentAmount(any(BigDecimal.class), anyInt(), any(BigDecimal.class))).thenReturn(BigDecimal.valueOf(50_000));
 
         ProcessingResult result = scoringService.process(requestDto);
@@ -53,16 +53,16 @@ class ScoringServiceTest {
     @Test
     void givenTwoOverdueAgreements_whenProcess_thenReturnCanceled() {
         List<AgreementDto> agreementDto = List.of(new AgreementDto(UUID.randomUUID(), LocalDate.parse("2023-11-20")),
-                new AgreementDto(UUID.randomUUID(), LocalDate.parse("2023-12-04")),
-                new AgreementDto(UUID.randomUUID(), LocalDate.parse("2023-11-30")));
+                new AgreementDto(UUID.randomUUID(), LocalDate.parse(LocalDate.now().toString())),
+                new AgreementDto(UUID.randomUUID(), LocalDate.parse(LocalDate.now().minusDays(4).toString())));
         ProcessApplicationRequestDto requestDto = ProcessApplicationRequestDto.builder()
                 .clientId(UUID.fromString("00000000-0000-0000-0000-000000000001"))
                 .applicationId(UUID.fromString("00000000-0000-0000-0000-000000000002"))
                 .clientSalary(BigDecimal.valueOf(60_000))
                 .disbursementAmount(BigDecimal.valueOf(100_000))
                 .build();
-        when(productEngineClientService.getProductInfo("CL1.0")).thenReturn(createProduct());
-        when(productEngineClientService.getClientStatistic(any(UUID.class))).thenReturn(agreementDto);
+        when(productEngineClientService.getProduct("CL1.0")).thenReturn(createProduct());
+        when(productEngineClientService.getClientAgreements(any(UUID.class))).thenReturn(agreementDto);
         when(productEngineClientService.getPaymentAmount(any(BigDecimal.class), anyInt(), any(BigDecimal.class))).thenReturn(BigDecimal.valueOf(50_000));
 
         ProcessingResult result = scoringService.process(requestDto);
@@ -79,8 +79,8 @@ class ScoringServiceTest {
                 .clientSalary(BigDecimal.valueOf(1000))
                 .disbursementAmount(BigDecimal.valueOf(100_000))
                 .build();
-        when(productEngineClientService.getProductInfo("CL1.0")).thenReturn(createProduct());
-        when(productEngineClientService.getClientStatistic(any(UUID.class))).thenReturn(agreementDto);
+        when(productEngineClientService.getProduct("CL1.0")).thenReturn(createProduct());
+        when(productEngineClientService.getClientAgreements(any(UUID.class))).thenReturn(agreementDto);
         when(productEngineClientService.getPaymentAmount(any(BigDecimal.class), anyInt(), any(BigDecimal.class))).thenReturn(BigDecimal.valueOf(50_000));
 
         ProcessingResult result = scoringService.process(requestDto);

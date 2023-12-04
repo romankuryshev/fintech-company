@@ -33,15 +33,15 @@ public class ProductEngineClientService {
 
     private final AdvancedPaymentMapper advancedPaymentMapper;
 
-    public Product getProductInfo(String productCode) {
+    public Product getProduct(String productCode) {
         ProductRequest request = productMapper.toRequest(productCode);
 
-        ProductResponse response = productEngineGrpcClient.getProductInfo(request);
+        ProductResponse response = productEngineGrpcClient.getProduct(request);
 
         return productMapper.toModel(response);
     }
 
-    public List<AgreementDto> getClientStatistic(UUID clientId) {
+    public List<AgreementDto> getClientAgreements(UUID clientId) {
         ClientAgreementsRequest request = clientAgreementMapper.toRequest(clientId);
 
         ClientAgreementsResponse response = productEngineGrpcClient.getClientAgreements(request);

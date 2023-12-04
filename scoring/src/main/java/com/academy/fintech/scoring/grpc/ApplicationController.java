@@ -23,11 +23,9 @@ public class ApplicationController extends ApplicationProcessingServiceGrpc.Appl
 
     @Override
     public void processApplication(ProcessApplicationRequest request, StreamObserver<ProcessApplicationResponse> responseObserver) {
-        log.info("request with application id " + request.getApplicationId());
         ProcessApplicationRequestDto requestDto = mapper.toDto(request);
         ProcessingResult result = scoringService.process(requestDto);
 
-        log.info("response with status" + mapper.toResponse(result));
         responseObserver.onNext(mapper.toResponse(result));
         responseObserver.onCompleted();
     }

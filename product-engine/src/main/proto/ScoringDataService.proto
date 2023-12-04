@@ -22,8 +22,6 @@ message ProductResponse {
   string maxPrincipalAmount = 5;
   string minInterest = 6;
   string maxInterest = 7;
-  string minOriginationAmount = 8;
-  string maxOriginationAmount = 9;
 }
 
 message ClientAgreementsRequest {

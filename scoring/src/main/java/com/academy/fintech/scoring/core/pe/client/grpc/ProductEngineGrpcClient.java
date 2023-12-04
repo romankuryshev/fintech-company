@@ -27,7 +27,7 @@ public class ProductEngineGrpcClient {
         this.stub = ScoringDataServiceGrpc.newBlockingStub(channel);
     }
 
-    public ProductResponse getProductInfo(ProductRequest request) {
+    public ProductResponse getProduct(ProductRequest request) {
         try {
             return stub.getProduct(request);
         } catch (StatusRuntimeException e) {

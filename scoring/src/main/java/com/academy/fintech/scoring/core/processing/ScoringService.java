@@ -35,8 +35,8 @@ public class ScoringService {
     private final ProductEngineClientService productEngineClientService;
 
     public ProcessingResult process(ProcessApplicationRequestDto requestDto) {
-        Product product = productEngineClientService.getProductInfo(PRODUCT_CODE);
-        List<AgreementDto> agreements = productEngineClientService.getClientStatistic(requestDto.clientId());
+        Product product = productEngineClientService.getProduct(PRODUCT_CODE);
+        List<AgreementDto> agreements = productEngineClientService.getClientAgreements(requestDto.clientId());
         BigDecimal paymentAmount = productEngineClientService.getPaymentAmount(INTEREST, TERM_IN_MONTHS, requestDto.disbursementAmount());
 
         if (!isValid(product, requestDto.disbursementAmount())) {
