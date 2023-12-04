@@ -1,17 +1,26 @@
 package com.academy.fintech.scoring.core.processing;
 
 import com.academy.fintech.scoring.core.pe.client.ProductEngineClientService;
-import com.academy.fintech.scoring.core.processing.model.ClientStatistic;
+import com.academy.fintech.scoring.core.processing.model.AgreementDto;
 import com.academy.fintech.scoring.core.processing.model.ProcessingResult;
 import com.academy.fintech.scoring.core.processing.model.Product;
 import com.academy.fintech.scoring.public_interface.processing.dto.ProcessApplicationRequestDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.List;
 
+/**
+ * Сервис вычисляет оценку для клиента, на основе которой принимает решение об одобрении либо
+ * отказе в выдаче кредита.
+ * Значения {@code PRODUCT_CODE, INTEREST, TERM_IN_MONTHS} в дальнейшем будут поступать через {@code ProcessApplicationRequestDto}.
+ */
 @Service
+@Slf4j
 @AllArgsConstructor
 public class ScoringService {
 
@@ -21,22 +30,58 @@ public class ScoringService {
 
     private static final int TERM_IN_MONTHS = 12;
 
+    private static final int PERMITTED_DELAY_IN_DAYS = 7;
+
     private final ProductEngineClientService productEngineClientService;
 
     public ProcessingResult process(ProcessApplicationRequestDto requestDto) {
         Product product = productEngineClientService.getProductInfo(PRODUCT_CODE);
-        ClientStatistic clientStatistic = productEngineClientService.getClientStatistic(requestDto.clientId());
+        List<AgreementDto> agreements = productEngineClientService.getClientStatistic(requestDto.clientId());
         BigDecimal paymentAmount = productEngineClientService.getPaymentAmount(INTEREST, TERM_IN_MONTHS, requestDto.disbursementAmount());
 
         if (!isValid(product, requestDto.disbursementAmount())) {
-            return ProcessingResult.CLOSED;
+            return ProcessingResult.CANCELED;
         }
 
-        int clientScore = calculateClientScore(clientStatistic, paymentAmount, requestDto.clientSalary());
+        int clientScore = calculateClientScore(agreements, paymentAmount, requestDto.clientSalary());
         if (clientScore <= 0) {
-            return ProcessingResult.CLOSED;
+            return ProcessingResult.CANCELED;
         }
         return ProcessingResult.ACCEPTED;
+    }
+
+    /**
+     * Метод рассчитывает оценку клиента исходя из его кредитной истории.
+     * Наличие каждого просроченного более чем на {@code PERMITTED_DELAY_IN_DAYS} дней кредита уменьшает оценку на 1.
+     * Аналогично, наличие кредитов оплаченных в срок, высчитывается как увеличивает оценку на 1.
+     *
+     * @param agreements  договора клиента
+     * @param paymentAmount  сумма ежемесячного платежа, при одобрении кредита
+     * @param clientSalary  заработная плата клиента
+     * @return оценка клиента.
+     */
+    private int calculateClientScore(List<AgreementDto> agreements, BigDecimal paymentAmount, BigDecimal clientSalary) {
+        int clientScore = 0;
+
+        if (clientSalary.divide(BigDecimal.valueOf(3), RoundingMode.HALF_UP).compareTo(paymentAmount) > 0) {
+            clientScore += 1;
+        }
+
+        LocalDate currentDate = LocalDate.now();
+
+        if (agreements.isEmpty()) {
+            clientScore++;
+        }
+
+        for (var agreement : agreements) {
+            if (agreement.nextPaymentDate().plusDays(PERMITTED_DELAY_IN_DAYS).isBefore(currentDate)) {
+                clientScore--;
+            } else if (agreement.nextPaymentDate().isAfter(currentDate)) {
+                clientScore++;
+            }
+        }
+
+        return clientScore;
     }
 
     private boolean isValid(Product product, BigDecimal disbursementAmount) {
@@ -54,33 +99,5 @@ public class ScoringService {
         }
 
         return true;
-    }
-
-    /**
-     * Метод рассчитывает оценку клиента исходя из его кредитной истории.
-     * Наличие каждого просроченного кредита уменьшает оценку на 1. Соответственно в сумме, она уменьшится на
-     * общее количество просроченных кредитов.
-     * Аналогично, количество кредитов, оплаченных в срок, высчитывается как {@code countProducts - countOverdueProducts}.
-     *
-     * @param statistic  статистика по продуктам клиента
-     * @param paymentAmount  сумма ежемесячного платежа, при одобрении кредита
-     * @param clientSalary  заработная плата клиента
-     * @return оценка клиента.
-     */
-    private int calculateClientScore(ClientStatistic statistic, BigDecimal paymentAmount, BigDecimal clientSalary) {
-        int clientScore = 0;
-
-        if (clientSalary.divide(BigDecimal.valueOf(3), RoundingMode.HALF_UP).compareTo(paymentAmount) > 0) {
-            clientScore += 1;
-        }
-
-        if (statistic.countProducts() == 0) {
-            clientScore += 1;
-        } else {
-            clientScore += statistic.countProducts() - statistic.countOverdueProducts();
-            clientScore -= statistic.countOverdueProducts();
-        }
-
-        return clientScore;
     }
 }

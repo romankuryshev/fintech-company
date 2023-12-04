@@ -1,7 +1,10 @@
 package com.academy.fintech.scoring.core.processing.model;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 
+@Builder
 public record Product(
         String code,
         int minTermInMonths,

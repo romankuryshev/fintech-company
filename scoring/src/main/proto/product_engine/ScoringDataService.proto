@@ -5,8 +5,8 @@ package com.academy.fintech.scoring.application_processing;
 option java_multiple_files = true;
 
 service ScoringDataService{
-  rpc getProductInfo(ProductRequest) returns (ProductResponse);
-  rpc getClientInfo(ClientStatisticRequest) returns (ClientStatisticResponse);
+  rpc getProduct(ProductRequest) returns (ProductResponse);
+  rpc getClientAgreements(ClientAgreementsRequest) returns (ClientAgreementsResponse);
   rpc getPaymentAmount(AdvancedPaymentRequest) returns (AdvancedPaymentResponse);
 }
 
@@ -26,13 +26,17 @@ message ProductResponse {
   string maxOriginationAmount = 9;
 }
 
-message ClientStatisticRequest {
+message ClientAgreementsRequest {
   string clientId = 1;
 }
 
-message ClientStatisticResponse {
-  int32 countProducts = 1;
-  int32 countOverdueProducts = 2;
+message ClientAgreementsResponse {
+  repeated AgreementResponse agreements = 1;
+}
+
+message AgreementResponse {
+  string agreementId = 1;
+  string nextPaymentDate = 2;
 }
 
 message AdvancedPaymentRequest {

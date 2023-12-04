@@ -2,8 +2,8 @@ package com.academy.fintech.scoring.core.pe.client.grpc;
 
 import com.academy.fintech.scoring.application_processing.AdvancedPaymentRequest;
 import com.academy.fintech.scoring.application_processing.AdvancedPaymentResponse;
-import com.academy.fintech.scoring.application_processing.ClientStatisticRequest;
-import com.academy.fintech.scoring.application_processing.ClientStatisticResponse;
+import com.academy.fintech.scoring.application_processing.ClientAgreementsRequest;
+import com.academy.fintech.scoring.application_processing.ClientAgreementsResponse;
 import com.academy.fintech.scoring.application_processing.ProductRequest;
 import com.academy.fintech.scoring.application_processing.ProductResponse;
 import com.academy.fintech.scoring.application_processing.ScoringDataServiceGrpc;
@@ -29,16 +29,16 @@ public class ProductEngineGrpcClient {
 
     public ProductResponse getProductInfo(ProductRequest request) {
         try {
-            return stub.getProductInfo(request);
+            return stub.getProduct(request);
         } catch (StatusRuntimeException e) {
             log.error("Got error from Product Engine by request: {}", request, e);
             throw e;
         }
     }
 
-    public ClientStatisticResponse getClientStatistic(ClientStatisticRequest request) {
+    public ClientAgreementsResponse getClientAgreements(ClientAgreementsRequest request) {
         try {
-            return stub.getClientInfo(request);
+            return stub.getClientAgreements(request);
         } catch (StatusRuntimeException e) {
             log.error("Got error from Product Engine by request: {}", request, e);
             throw e;

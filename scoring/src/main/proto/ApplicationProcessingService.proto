@@ -11,11 +11,10 @@ service ApplicationProcessingService{
 message ProcessApplicationRequest {
   string applicationId = 1;
   string clientId = 2;
-  string salary = 3;
+  string clientSalary = 3;
   string disbursementAmount = 4;
 }
 
 message ProcessApplicationResponse {
-  string applicationId = 1;
-  string status = 2;
+  string status = 1;
 }

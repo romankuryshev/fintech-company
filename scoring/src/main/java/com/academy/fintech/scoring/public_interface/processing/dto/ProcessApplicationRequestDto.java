@@ -1,10 +1,14 @@
 package com.academy.fintech.scoring.public_interface.processing.dto;
 
-import java.math.BigDecimal;
+import lombok.Builder;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
+@Builder
 public record ProcessApplicationRequestDto (
-        String applicationId,
-        String clientId,
+        UUID applicationId,
+        UUID clientId,
         BigDecimal clientSalary,
         BigDecimal disbursementAmount
 )

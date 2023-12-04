@@ -2,21 +2,23 @@ package com.academy.fintech.scoring.core.pe.client;
 
 import com.academy.fintech.scoring.application_processing.AdvancedPaymentRequest;
 import com.academy.fintech.scoring.application_processing.AdvancedPaymentResponse;
-import com.academy.fintech.scoring.application_processing.ClientStatisticRequest;
-import com.academy.fintech.scoring.application_processing.ClientStatisticResponse;
+import com.academy.fintech.scoring.application_processing.ClientAgreementsRequest;
+import com.academy.fintech.scoring.application_processing.ClientAgreementsResponse;
 import com.academy.fintech.scoring.application_processing.ProductRequest;
 import com.academy.fintech.scoring.application_processing.ProductResponse;
 import com.academy.fintech.scoring.core.pe.client.grpc.ProductEngineGrpcClient;
-import com.academy.fintech.scoring.core.pe.client.mapper.ClientStatisticMapper;
+import com.academy.fintech.scoring.core.pe.client.mapper.ClientAgreementMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.AdvancedPaymentMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.ProductMapper;
-import com.academy.fintech.scoring.core.processing.model.ClientStatistic;
+import com.academy.fintech.scoring.core.processing.model.AgreementDto;
 import com.academy.fintech.scoring.core.processing.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -27,7 +29,7 @@ public class ProductEngineClientService {
 
     private final ProductMapper productMapper;
 
-    private final ClientStatisticMapper clientStatisticMapper;
+    private final ClientAgreementMapper clientAgreementMapper;
 
     private final AdvancedPaymentMapper advancedPaymentMapper;
 
@@ -39,12 +41,12 @@ public class ProductEngineClientService {
         return productMapper.toModel(response);
     }
 
-    public ClientStatistic getClientStatistic(String clientId) {
-        ClientStatisticRequest request = clientStatisticMapper.toRequest(clientId);
+    public List<AgreementDto> getClientStatistic(UUID clientId) {
+        ClientAgreementsRequest request = clientAgreementMapper.toRequest(clientId);
 
-        ClientStatisticResponse response = productEngineGrpcClient.getClientStatistic(request);
+        ClientAgreementsResponse response = productEngineGrpcClient.getClientAgreements(request);
 
-        return clientStatisticMapper.toModel(response);
+        return clientAgreementMapper.toModel(response.getAgreementsList());
     }
 
     public BigDecimal getPaymentAmount(BigDecimal interest, int term, BigDecimal disbursementAmount) {

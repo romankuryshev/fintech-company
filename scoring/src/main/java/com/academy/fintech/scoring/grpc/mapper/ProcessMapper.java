@@ -7,10 +7,10 @@ import com.academy.fintech.scoring.public_interface.processing.dto.ProcessApplic
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProcessMapper {
 
     ProcessApplicationRequestDto toDto (ProcessApplicationRequest request);
 
-    ProcessApplicationResponse toResponse(ProcessingResult result);
+    ProcessApplicationResponse toResponse(ProcessingResult status);
 }

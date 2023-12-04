@@ -9,9 +9,11 @@ import com.academy.fintech.scoring.public_interface.processing.dto.ProcessApplic
 import com.academy.fintech.scoring.grpc.mapper.ProcessMapper;
 import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
+@Slf4j
 @AllArgsConstructor
 public class ApplicationController extends ApplicationProcessingServiceGrpc.ApplicationProcessingServiceImplBase {
 
@@ -21,9 +23,11 @@ public class ApplicationController extends ApplicationProcessingServiceGrpc.Appl
 
     @Override
     public void processApplication(ProcessApplicationRequest request, StreamObserver<ProcessApplicationResponse> responseObserver) {
+        log.info("request with application id " + request.getApplicationId());
         ProcessApplicationRequestDto requestDto = mapper.toDto(request);
         ProcessingResult result = scoringService.process(requestDto);
 
+        log.info("response with status" + mapper.toResponse(result));
         responseObserver.onNext(mapper.toResponse(result));
         responseObserver.onCompleted();
     }
