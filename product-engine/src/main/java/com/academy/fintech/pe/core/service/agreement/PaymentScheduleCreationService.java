@@ -63,7 +63,8 @@ public class PaymentScheduleCreationService {
 
         schedule.setPayments(payments);
         agreement.setStatus(AgreementStatus.ACTIVE);
-        agreement.setDisbursementDate(scheduleDto.disbursementDate().plusMonths(1));
+        agreement.setDisbursementDate(scheduleDto.disbursementDate());
+        agreement.setNextPaymentDate(scheduleDto.disbursementDate().plusMonths(1));
 
         loanPaymentService.saveAll(payments);
         paymentScheduleService.save(schedule);
