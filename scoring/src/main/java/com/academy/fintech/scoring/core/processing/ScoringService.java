@@ -71,7 +71,7 @@ public class ScoringService {
         int clientScore = 0;
 
         if (clientSalary.divide(BigDecimal.valueOf(3), RoundingMode.HALF_UP).compareTo(paymentAmount) > 0) {
-            clientScore += 1;
+            clientScore++;
         }
 
         LocalDate currentDate = LocalDate.now();
