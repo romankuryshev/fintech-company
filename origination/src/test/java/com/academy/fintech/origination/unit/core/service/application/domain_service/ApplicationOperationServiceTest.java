@@ -6,7 +6,8 @@ import com.academy.fintech.origination.core.service.application.db.application.A
 import com.academy.fintech.origination.core.service.application.db.client.Client;
 import com.academy.fintech.origination.core.service.application.domain_service.ApplicationOperationService;
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationAlreadyExistsException;
-import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationDeleteException;
+import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationCancelingException;
+import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationNotFoundException;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CreateRequestDto;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CancelRequestDto;
 import org.junit.jupiter.api.Test;
@@ -129,8 +130,8 @@ class ApplicationOperationServiceTest {
                 .build();
         when(applicationService.findById(dto.applicationId())).thenReturn(application);
 
-        assertThrows(ApplicationDeleteException.class, () ->
-                applicationOperationService.setApplicationStatus(dto.applicationId(), ApplicationStatus.CANCELED));
+        assertThrows(ApplicationCancelingException.class, () ->
+                applicationOperationService.cancelApplication(dto.applicationId()));
     }
 
     @Test
@@ -138,8 +139,8 @@ class ApplicationOperationServiceTest {
         CancelRequestDto dto = new CancelRequestDto(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         when(applicationService.findById(dto.applicationId())).thenReturn(null);
 
-        assertThrows(ApplicationDeleteException.class, () ->
-                applicationOperationService.setApplicationStatus(dto.applicationId(), ApplicationStatus.CANCELED));
+        assertThrows(ApplicationNotFoundException.class, () ->
+                applicationOperationService.cancelApplication(dto.applicationId()));
     }
 
 

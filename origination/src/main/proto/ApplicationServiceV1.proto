@@ -13,8 +13,8 @@ message CreateRequest{
   string firstName = 1;
   string lastName = 2;
   string email = 3;
-  int32 salary = 4;
-  int32 disbursementAmount = 5;
+  string salary = 4;
+  string disbursementAmount = 5;
 }
 
 message CreateResponse{

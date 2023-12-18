@@ -5,7 +5,8 @@ import com.academy.fintech.origination.core.service.application.db.application.A
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.Client;
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationAlreadyExistsException;
-import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationDeleteException;
+import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationCancelingException;
+import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationNotFoundException;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CreateRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,19 +51,19 @@ public class ApplicationOperationService {
         return application;
     }
 
-    public void setApplicationStatus(UUID applicationId, ApplicationStatus status) {
+    public void cancelApplication(UUID applicationId) {
         Application application = applicationService.findById(applicationId);
         if (application == null) {
             log.error("application doesn't exists. id - " + applicationId);
-            throw new ApplicationDeleteException("Application with id " + applicationId + " doesn't exists.");
+            throw new ApplicationNotFoundException("Application with id " + applicationId + " not found.");
         }
 
         if (application.getStatus() != ApplicationStatus.NEW && application.getStatus() != ApplicationStatus.SCORING) {
-            log.error("application with id - " + applicationId + " and status - " + application.getStatus());
-            throw new ApplicationDeleteException("Application with id " + applicationId + " already processed.");
+            log.error("application with id - " + applicationId + " and status - " + application.getStatus() + " already processed.");
+            throw new ApplicationCancelingException("Application with id " + applicationId + " already processed.");
         }
 
-        application.setStatus(status);
+        application.setStatus(ApplicationStatus.CANCELED);
         applicationService.save(application);
     }
 }

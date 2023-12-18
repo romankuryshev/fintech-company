@@ -27,7 +27,7 @@ import java.util.UUID;
 @Setter
 @Table(name = "application")
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Application {
