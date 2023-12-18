@@ -1,4 +1,4 @@
-### Fintech-company
+# Fintech-company
 ___
 Project for processing loan applications. Developed as part of the Tinkoff Backend Academy.
 
