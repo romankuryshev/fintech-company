@@ -5,7 +5,7 @@ Project for processing loan applications. Developed as part of the Tinkoff Backe
 Includes modules:
 
 * Api - service for working with the client part.
-* Origination - sncoming applications processing service.
+* Origination - service of asynchronous scheduled processing of incoming applications.
 * Scoring - service that checks the client and makes a decision on the application.
 * Payment-Engine - service storing all information about payments and products.
 
