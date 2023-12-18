@@ -18,6 +18,7 @@ import com.academy.fintech.scoring.core.pe.client.mapper.ClientAgreementMapperIm
 import com.academy.fintech.scoring.core.pe.client.mapper.ProductMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.ProductMapperImpl;
 import com.academy.fintech.scoring.core.processing.dto.AgreementDto;
+import com.academy.fintech.scoring.core.processing.exception.ProductDoesNotExists;
 import com.academy.fintech.scoring.core.processing.model.Product;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -89,10 +90,8 @@ class ProductEngineClientServiceTest {
     void givenInvalidProductCode_whenGetProduct_thenThrowsException() {
         when(productEngineGrpcClient.getProduct(any(ProductRequest.class))).thenThrow(new StatusRuntimeException(Status.INVALID_ARGUMENT));
 
-        StatusRuntimeException exception = assertThrows(StatusRuntimeException.class,
+        ProductDoesNotExists exception = assertThrows(ProductDoesNotExists.class,
                 () -> productEngineClientService.getProduct("CL1.0"));
-
-        assertThat(exception.getStatus().getCode()).isEqualTo(Status.INVALID_ARGUMENT.getCode());
     }
 
     @Test
