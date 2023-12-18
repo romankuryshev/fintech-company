@@ -40,8 +40,8 @@ public class OriginationClientService {
                 .setFirstName(applicationDto.firstName())
                 .setLastName(applicationDto.lastName())
                 .setEmail(applicationDto.email())
-                .setSalary(applicationDto.salary())
-                .setDisbursementAmount(applicationDto.amount())
+                .setSalary(Integer.toString(applicationDto.salary()))
+                .setDisbursementAmount(Integer.toString(applicationDto.amount()))
                 .build();
     }
 

@@ -52,9 +52,6 @@ public class ApplicationControllerIT {
         registry.add("spring.datasource.url", postgresSQLContainer::getJdbcUrl);
         registry.add("spring.datasource.username", postgresSQLContainer::getUsername);
         registry.add("spring.datasource.password", postgresSQLContainer::getPassword);
-        System.out.println(postgresSQLContainer.getJdbcUrl());
-        System.out.println(postgresSQLContainer.getUsername());
-        System.out.println(postgresSQLContainer.getPassword());
     }
 
     private Application createApplication(Client client) {
@@ -71,8 +68,8 @@ public class ApplicationControllerIT {
                 .setFirstName("roman")
                 .setLastName("kuryshev")
                 .setEmail("roman@mail.ru")
-                .setSalary(10_000)
-                .setDisbursementAmount(200_000)
+                .setSalary("10000")
+                .setDisbursementAmount("200000")
                 .build();
 
         CreateResponse response = client.create(request);
@@ -120,8 +117,8 @@ public class ApplicationControllerIT {
                 .setFirstName("roman")
                 .setLastName("kuryshev")
                 .setEmail("roman2@mail.ru")
-                .setSalary(10_000)
-                .setDisbursementAmount(200_000)
+                .setSalary("10000")
+                .setDisbursementAmount("200000")
                 .build();
 
         StatusRuntimeException exception = assertThrows(StatusRuntimeException.class, () -> client.create(request));

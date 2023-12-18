@@ -1,7 +1,8 @@
 package com.academy.fintech.origination.grpc.service.application.v1;
 
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationAlreadyExistsException;
-import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationDeleteException;
+import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationCancelingException;
+import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationNotFoundException;
 import io.grpc.Metadata;
 import io.grpc.Status;
 import io.grpc.StatusException;
@@ -24,8 +25,14 @@ public class ExceptionHandler {
         return status.asException(metadata);
     }
 
-    @GrpcExceptionHandler(ApplicationDeleteException.class)
-    public StatusException handleApplicationAlreadyExistsException(ApplicationDeleteException e) {
+    @GrpcExceptionHandler(ApplicationNotFoundException.class)
+    public StatusException handleApplicationNotFoundException(ApplicationNotFoundException e) {
+        Status status = CANCELLED.withDescription(e.getMessage()).withCause(e);
+        return status.asException();
+    }
+
+    @GrpcExceptionHandler(ApplicationCancelingException.class)
+    public StatusException handleApplicationCancelingException(ApplicationCancelingException e) {
         Status status = CANCELLED.withDescription(e.getMessage()).withCause(e);
         return status.asException();
     }
