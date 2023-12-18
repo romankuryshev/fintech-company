@@ -2,8 +2,7 @@ package com.academy.fintech.scoring.core.processing;
 
 import com.academy.fintech.scoring.core.pe.client.ProductEngineClientService;
 import com.academy.fintech.scoring.core.processing.exception.ProductDoesNotExists;
-import com.academy.fintech.scoring.core.processing.model.AgreementDto;
-import com.academy.fintech.scoring.core.processing.model.ProcessingResult;
+import com.academy.fintech.scoring.core.processing.dto.AgreementDto;
 import com.academy.fintech.scoring.core.processing.model.Product;
 import com.academy.fintech.scoring.public_interface.processing.dto.ProcessApplicationRequestDto;
 import lombok.AllArgsConstructor;
@@ -32,6 +31,8 @@ public class ScoringService {
     private static final int TERM_IN_MONTHS = 12;
 
     private static final int PERMITTED_DELAY_IN_DAYS = 7;
+
+    private static final BigDecimal PART_OF_SALARY = BigDecimal.valueOf(3);
 
     private final ProductEngineClientService productEngineClientService;
 
@@ -70,7 +71,7 @@ public class ScoringService {
     private int calculateClientScore(List<AgreementDto> agreements, BigDecimal paymentAmount, BigDecimal clientSalary) {
         int clientScore = 0;
 
-        if (clientSalary.divide(BigDecimal.valueOf(3), RoundingMode.HALF_UP).compareTo(paymentAmount) > 0) {
+        if (clientSalary.divide(PART_OF_SALARY, RoundingMode.HALF_UP).compareTo(paymentAmount) > 0) {
             clientScore++;
         }
 

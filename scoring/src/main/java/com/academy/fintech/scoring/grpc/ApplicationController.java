@@ -3,7 +3,7 @@ package com.academy.fintech.scoring.grpc;
 import com.academy.fintech.scoring.application_processing.ApplicationProcessingServiceGrpc;
 import com.academy.fintech.scoring.application_processing.ProcessApplicationRequest;
 import com.academy.fintech.scoring.application_processing.ProcessApplicationResponse;
-import com.academy.fintech.scoring.core.processing.model.ProcessingResult;
+import com.academy.fintech.scoring.core.processing.ProcessingResult;
 import com.academy.fintech.scoring.core.processing.ScoringService;
 import com.academy.fintech.scoring.public_interface.processing.dto.ProcessApplicationRequestDto;
 import com.academy.fintech.scoring.grpc.mapper.ProcessMapper;

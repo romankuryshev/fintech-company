@@ -2,7 +2,7 @@ package com.academy.fintech.scoring.core.pe.client.mapper;
 
 import com.academy.fintech.scoring.application_processing.AgreementResponse;
 import com.academy.fintech.scoring.application_processing.ClientAgreementsRequest;
-import com.academy.fintech.scoring.core.processing.model.AgreementDto;
+import com.academy.fintech.scoring.core.processing.dto.AgreementDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

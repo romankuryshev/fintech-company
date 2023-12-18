@@ -17,7 +17,7 @@ import com.academy.fintech.scoring.core.pe.client.mapper.ClientAgreementMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.ClientAgreementMapperImpl;
 import com.academy.fintech.scoring.core.pe.client.mapper.ProductMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.ProductMapperImpl;
-import com.academy.fintech.scoring.core.processing.model.AgreementDto;
+import com.academy.fintech.scoring.core.processing.dto.AgreementDto;
 import com.academy.fintech.scoring.core.processing.model.Product;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -36,7 +36,6 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

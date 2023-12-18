@@ -11,7 +11,7 @@ import com.academy.fintech.scoring.core.pe.client.mapper.ClientAgreementMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.AdvancedPaymentMapper;
 import com.academy.fintech.scoring.core.pe.client.mapper.ProductMapper;
 import com.academy.fintech.scoring.core.processing.exception.ProductDoesNotExists;
-import com.academy.fintech.scoring.core.processing.model.AgreementDto;
+import com.academy.fintech.scoring.core.processing.dto.AgreementDto;
 import com.academy.fintech.scoring.core.processing.model.Product;
 import io.grpc.StatusRuntimeException;
 import lombok.AllArgsConstructor;

@@ -2,8 +2,8 @@ package com.academy.fintech.scoring.unit.core.processing;
 
 import com.academy.fintech.scoring.core.pe.client.ProductEngineClientService;
 import com.academy.fintech.scoring.core.processing.ScoringService;
-import com.academy.fintech.scoring.core.processing.model.AgreementDto;
-import com.academy.fintech.scoring.core.processing.model.ProcessingResult;
+import com.academy.fintech.scoring.core.processing.dto.AgreementDto;
+import com.academy.fintech.scoring.core.processing.ProcessingResult;
 import com.academy.fintech.scoring.core.processing.model.Product;
 import com.academy.fintech.scoring.public_interface.processing.dto.ProcessApplicationRequestDto;
 import org.junit.jupiter.api.Test;
