@@ -33,7 +33,7 @@ class ScoringServiceTest {
 
     @Test
     void givenValidRequestDto_whenProcess_thenReturnAccepted() {
-        List<AgreementDto> agreementDto = List.of(new AgreementDto(UUID.randomUUID(), LocalDate.parse("2023-12-05")),
+        List<AgreementDto> agreementDto = List.of(new AgreementDto(UUID.randomUUID(), LocalDate.now().plusDays(1)),
                 new AgreementDto(UUID.randomUUID(), LocalDate.parse(LocalDate.now().minusDays(5).toString())));
         ProcessApplicationRequestDto requestDto = ProcessApplicationRequestDto.builder()
                 .clientId(UUID.fromString("00000000-0000-0000-0000-000000000001"))
