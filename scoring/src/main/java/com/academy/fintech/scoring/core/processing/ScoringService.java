@@ -71,7 +71,7 @@ public class ScoringService {
     private int calculateClientScore(List<AgreementDto> agreements, BigDecimal paymentAmount, BigDecimal clientSalary) {
         int clientScore = 0;
 
-        if (clientSalary.divide(BigDecimal.valueOf(3), RoundingMode.HALF_UP).compareTo(paymentAmount) > 0) {
+        if (clientSalary.divide(PART_OF_SALARY, RoundingMode.HALF_UP).compareTo(paymentAmount) > 0) {
             clientScore++;
         }
 
