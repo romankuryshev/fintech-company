@@ -20,6 +20,8 @@ spring-grpc = {module = "net.devh:grpc-spring-boot-starter", version = "2.15.0.R
 # grpc
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
 grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
+protobuf-java-util = { module = "com.google.protobuf:protobuf-java-util", version = "3.23.0" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "3.23.0" }
 
 javax-annotation = { module = 'javax.annotation:javax.annotation-api', version = "1.3.2" }
 
@@ -36,5 +38,3 @@ testcontainres-jupiter = { module = "org.testcontainers:junit-jupiter", version.
 
 jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.0" }
 grpc-testing = { module = "io.grpc:grpc-testing", version.ref = "grpc" }
-
-

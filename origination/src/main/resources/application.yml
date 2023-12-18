@@ -8,11 +8,16 @@ spring:
     show-sql: true
 
   datasource:
-    url: jdbc:postgresql://db:5432/product_engine
-#    url: jdbc:postgresql://localhost:5433/product_engine
+    url: jdbc:postgresql://db:5432/origination
+#    url: jdbc:postgresql://localhost:5434/origination
     username: postgres
     password: postgres
 
+
+server:
+  port: 8084
+
 grpc:
   server:
+    port: 9094
     reflection-service-enabled: true
