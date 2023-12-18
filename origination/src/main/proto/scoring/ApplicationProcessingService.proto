@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.academy.fintech.scoring.application_processing;
+
+option java_multiple_files = true;
+
+service ApplicationProcessingService{
+  rpc ProcessApplication(ProcessApplicationRequest) returns (ProcessApplicationResponse);
+}
+
+message ProcessApplicationRequest {
+  string applicationId = 1;
+  string clientId = 2;
+  string clientSalary = 3;
+  string disbursementAmount = 4;
+}
+
+message ProcessApplicationResponse {
+  string status = 1;
+}

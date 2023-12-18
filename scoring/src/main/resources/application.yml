@@ -1,0 +1,15 @@
+scoring:
+  client:
+    product-engine:
+      grpc:
+        host: product-engine
+#        host: localhost
+        port: 9090
+
+server:
+  port: 8081
+
+grpc:
+  server:
+    reflection-service-enabled: true
+    port: 9095

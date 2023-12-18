@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface ApplicationRepository extends JpaRepository<Application, UUID> {
 
     List<Application> findAllByClient(Client client);
+
+    List<Application> findAllByStatus(ApplicationStatus status);
 }
