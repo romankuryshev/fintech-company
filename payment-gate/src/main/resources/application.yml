@@ -1,0 +1,27 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.change-log-master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://db:5432/payment_gate
+#    url: jdbc:postgresql://localhost:5433/payment_gate
+    username: postgres
+    password: postgres
+
+payment-gate:
+  rest:
+    provider:
+      merchant:
+        host: merchant-provider
+#        host: localhost
+        port: 8080
+
+grpc:
+  server:
+    reflection-service-enabled: true
+    port: 9096
