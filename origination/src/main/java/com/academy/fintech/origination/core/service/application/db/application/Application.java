@@ -47,4 +47,7 @@ public class Application {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
+
+    @Column(name = "agreementId")
+    private UUID agreementId;
 }
