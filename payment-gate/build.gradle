@@ -1,0 +1,41 @@
+plugins {
+    alias(libs.plugins.protobuf.plugin)
+    alias(libs.plugins.spring.plugin)
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.24.4'
+    }
+
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.59.0'
+        }
+    }
+    generateProtoTasks{
+        all()*.plugins {grpc {}}
+    }
+}
+
+dependencies {
+    implementation libs.spring.jpa
+    implementation libs.spring.grpc
+    implementation libs.spring.validator
+    implementation libs.spring.web.flux
+
+    implementation libs.protobuf.java.util
+    implementation libs.grpc.protobuf
+    implementation libs.grpc.stub
+    implementation libs.protobuf.java
+
+    implementation libs.liquibase
+    implementation libs.javax.annotation
+    implementation libs.postgresql.driver
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstructAnnotationProcessor
+
+    testImplementation libs.spring.test
+    testImplementation libs.grpc.testing
+}
