@@ -17,7 +17,7 @@ payment-gate:
   rest:
     provider:
       merchant:
-        host: merchant-provider
+        host: http://merchant-provider
 #        host: localhost
         port: 8080
 
