@@ -1,5 +1,7 @@
 package com.academy.fintech.origination.integration.core.service.application.application_processing;
 
+import com.academy.fintech.origination.core.pe.client.ProductEngineClientService;
+import com.academy.fintech.origination.core.pg.client.PaymentGateClientService;
 import com.academy.fintech.origination.core.scoring.client.grpc.ScoringGrpcClient;
 import com.academy.fintech.origination.core.service.application.db.application.Application;
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationRepository;
@@ -23,6 +25,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -42,6 +45,12 @@ public class ApplicationProcessingSchedulerIT {
 
     @MockBean
     private ScoringGrpcClient scoringGrpcClient;
+
+    @MockBean
+    private ProductEngineClientService productEngineClientService;
+
+    @MockBean
+    private PaymentGateClientService paymentGateClientService;
 
     @DynamicPropertySource
     static void postgresPropertySource(DynamicPropertyRegistry registry) {
@@ -71,6 +80,7 @@ public class ApplicationProcessingSchedulerIT {
         UUID applicationId = application.getId();
 
         when(scoringGrpcClient.processApplication(any(ProcessApplicationRequest.class))).thenReturn(response);
+        when(productEngineClientService.createAgreement(application)).thenReturn(UUID.randomUUID());
 
         try {
             Thread.sleep(schedulerTimeout);
