@@ -22,7 +22,7 @@ public class DisbursementExecutionService {
         Disbursement disbursement = createEntityFromDto(disbursementDto);
         disbursementService.save(disbursement);
 
-//        merchantProviderService.sendDisbursement(disbursement);
+        merchantProviderService.sendDisbursement(disbursement);
     }
 
     private Disbursement createEntityFromDto(DisbursementDto disbursementDto) {

@@ -55,6 +55,12 @@ services:
     links:
       - product-engine
 
+  merchant-provider:
+    build: merchant-provider/
+    restart: no
+    ports:
+      - '8080:8080'
+
 volumes:
   db:
     driver: local

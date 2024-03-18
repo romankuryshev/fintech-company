@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class MerchantProviderRestClient {
 
+    private static final String DISBURSEMENT_CREATE_URI = "/disbursement/create";
     private final WebClient webClient;
 
     public MerchantProviderRestClient(MerchantProviderRestClientProperty property) {
@@ -17,6 +18,7 @@ public class MerchantProviderRestClient {
 
     public void sendDisbursement(DisbursementDto disbursementDto) {
         webClient.post()
+                .uri(DISBURSEMENT_CREATE_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(disbursementDto)
                 .retrieve()
