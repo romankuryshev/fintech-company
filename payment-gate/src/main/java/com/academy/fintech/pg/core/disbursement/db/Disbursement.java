@@ -42,4 +42,15 @@ public class Disbursement {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private DisbursementStatus status;
+
+    @Column(name = "check_count")
+    private int checkCount;
+
+    @Column(name = "next_check_date")
+    private LocalDateTime nextCheckDate;
+
+    public int incrementCheckCount() {
+        checkCount += 1;
+        return checkCount;
+    }
 }

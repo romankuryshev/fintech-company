@@ -7,6 +7,7 @@ option java_multiple_files = true;
 service ApplicationService{
   rpc Create(CreateRequest) returns (CreateResponse) {}
   rpc Remove(CancelRequest) returns (CancelResponse) {}
+  rpc ChangeStatus(ChangeStatusRequest) returns (Empty) {}
 }
 
 message CreateRequest{
@@ -27,4 +28,12 @@ message CancelRequest {
 
 message CancelResponse {
   bool success = 1;
+}
+
+message ChangeStatusRequest {
+  string agreementId = 1;
+  string status = 2;
+}
+
+message Empty {
 }
