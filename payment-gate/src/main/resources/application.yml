@@ -18,8 +18,14 @@ payment-gate:
     provider:
       merchant:
         host: http://merchant-provider
-#        host: localhost
         port: 8080
+    pe:
+      host: http://product-engine
+      port: 8080
+  grpc:
+    origination:
+      host: origination
+      port: 9094
 
 grpc:
   server:

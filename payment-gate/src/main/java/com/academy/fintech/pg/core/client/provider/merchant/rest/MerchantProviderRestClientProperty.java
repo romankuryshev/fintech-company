@@ -1,4 +1,4 @@
-package com.academy.fintech.pg.core.disbursement.provider.merchant.rest;
+package com.academy.fintech.pg.core.client.provider.merchant.rest;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

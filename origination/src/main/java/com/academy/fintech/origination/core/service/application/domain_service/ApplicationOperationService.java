@@ -66,4 +66,6 @@ public class ApplicationOperationService {
         application.setStatus(ApplicationStatus.CANCELED);
         applicationService.save(application);
     }
+
+
 }

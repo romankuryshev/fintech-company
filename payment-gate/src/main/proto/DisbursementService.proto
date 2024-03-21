@@ -8,6 +8,15 @@ service DisbursementService{
   rpc ExecuteDisbursement(DisbursementRequest) returns (Empty);
 }
 
+service DisbursementConfirmService{
+  rpc ChangeStatus(ChangeStatusRequest) returns (Empty) {}
+}
+
+message ChangeStatusRequest {
+  string agreementId = 1;
+  string status = 2;
+}
+
 message DisbursementRequest {
   string agreementId = 1;
   string amount = 2;
@@ -15,3 +24,4 @@ message DisbursementRequest {
 
 message Empty {
 }
+
