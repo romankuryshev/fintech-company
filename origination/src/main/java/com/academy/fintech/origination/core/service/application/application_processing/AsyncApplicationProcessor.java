@@ -34,14 +34,12 @@ public class AsyncApplicationProcessor {
         ApplicationStatus status = scoringClientService.processApplication(application);
         application.setStatus(status);
 
+        // TODO: add exception handling and rollback if ops fails
         if (status.equals(ApplicationStatus.ACCEPTED)) {
             UUID agreementId = productEngineClientService.createAgreement(application);
-            log.info("Agreement id: {}", agreementId);
-            log.info("Status: {}", status);
             application.setAgreementId(agreementId);
             paymentGateClientService.executePayment(application);
         }
-        // TODO: добавить логику обработки ошибок создания договора и выплаты денег
 
         applicationService.save(application);
         emailClientService.sendApplicationStatusNotification(application);

@@ -1,17 +1,18 @@
 package com.academy.fintech.pg.core.client.provider.merchant.rest;
 
-import com.academy.fintech.pg.core.client.provider.merchant.dto.DisbursementStatusRequest;
 import com.academy.fintech.pg.core.client.provider.merchant.dto.DisbursementStatusResponse;
 import com.academy.fintech.pg.public_interface.DisbursementDto;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.UUID;
+
 @Component
 public class MerchantProviderRestClient {
 
     private static final String DISBURSEMENT_CREATE_URI = "/disbursement/create";
-    private static final String CHECK_DISBURSEMENT_URI = "/disbursement/check/status";
+    private static final String CHECK_DISBURSEMENT_URI = "/disbursement/%s/status";
     private final WebClient webClient;
 
     public MerchantProviderRestClient(MerchantProviderRestClientProperty property) {
@@ -28,11 +29,9 @@ public class MerchantProviderRestClient {
                 .block();
     }
 
-    public DisbursementStatusResponse checkDisbursement(DisbursementStatusRequest request) {
-        return webClient.post()
-                .uri(CHECK_DISBURSEMENT_URI)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(request)
+    public DisbursementStatusResponse checkDisbursement(UUID agreementId) {
+        return webClient.get()
+                .uri(String.format(CHECK_DISBURSEMENT_URI, agreementId))
                 .retrieve()
                 .bodyToMono(DisbursementStatusResponse.class)
                 .block();

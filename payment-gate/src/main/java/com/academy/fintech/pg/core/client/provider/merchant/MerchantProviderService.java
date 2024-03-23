@@ -1,6 +1,5 @@
 package com.academy.fintech.pg.core.client.provider.merchant;
 
-import com.academy.fintech.pg.core.client.provider.merchant.dto.DisbursementStatusRequest;
 import com.academy.fintech.pg.core.client.provider.merchant.dto.DisbursementStatusResponse;
 import com.academy.fintech.pg.core.client.provider.merchant.rest.MerchantProviderRestClient;
 import com.academy.fintech.pg.core.disbursement.db.Disbursement;
@@ -24,11 +23,7 @@ public class MerchantProviderService {
     }
 
     public DisbursementStatus checkStatus(Disbursement disbursement) {
-        DisbursementStatusResponse response = merchantProviderRestClient.checkDisbursement(mapToDisbursementStatusRequest(disbursement));
+        DisbursementStatusResponse response = merchantProviderRestClient.checkDisbursement(disbursement.getAgreementId());
         return response.status();
-    }
-
-    private DisbursementStatusRequest mapToDisbursementStatusRequest(Disbursement disbursement) {
-        return new DisbursementStatusRequest(disbursement.getAgreementId());
     }
 }

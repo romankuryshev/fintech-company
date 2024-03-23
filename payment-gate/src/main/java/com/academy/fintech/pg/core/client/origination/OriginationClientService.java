@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OriginationClientService {
 
+    private final static String APPLICATION_STATUS_ACTIVE = "ACTIVE";
+
     private final OriginationGrpcClient originationRestClient;
 
     public void confirmDisbursement(Disbursement disbursement) {
@@ -19,7 +21,8 @@ public class OriginationClientService {
     private ChangeStatusRequest mapToChangeStatusRequest(Disbursement disbursement) {
         return ChangeStatusRequest.newBuilder()
                 .setAgreementId(disbursement.getAgreementId().toString())
-                .setStatus(disbursement.getStatus().toString())
+                .setStatus(APPLICATION_STATUS_ACTIVE)
+                .setDisbursementDate(disbursement.getDateTime().toLocalDate().toString())
                 .build();
     }
 }
