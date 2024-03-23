@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package com.academy.fintech.pe.grpc.service.agreement.payment_schedule;
+option java_multiple_files = true;
+
+service PaymentScheduleCreationService{
+  rpc CreateSchedule(PaymentScheduleRequest) returns (PaymentScheduleResponse) {}
+}
+
+message PaymentScheduleRequest {
+  string agreementId = 1;
+  string disbursementDate = 2;
+}
+
+message PaymentScheduleResponse {
+  string agreementId = 1;
+  int32 version = 2;
+  repeated LoanPaymentResponse payments = 3;
+}
+
+message LoanPaymentResponse{
+  int32 id = 1;
+  string date = 3;
+  int32 period = 4;
+  string periodPayment = 5;
+  string interestPayment = 6;
+  string principalPayment = 7;
+}

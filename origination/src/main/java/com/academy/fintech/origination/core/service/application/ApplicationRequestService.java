@@ -1,5 +1,6 @@
 package com.academy.fintech.origination.core.service.application;
 
+import com.academy.fintech.origination.core.pe.client.ProductEngineClientService;
 import com.academy.fintech.origination.core.service.application.db.application.Application;
 import com.academy.fintech.origination.core.service.application.db.client.Client;
 import com.academy.fintech.origination.core.service.application.domain_service.ApplicationOperationService;
@@ -7,6 +8,7 @@ import com.academy.fintech.origination.core.service.application.domain_service.C
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CancelRequestDto;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CreateRequestDto;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.ClientDto;
+import com.academy.fintech.origination.grpc.service.disbursement.dto.ChangeApplicationStatusDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ public class ApplicationRequestService {
     private final ApplicationOperationService applicationOperationService;
 
     private final ClientOperationService clientOperationService;
+    private final ProductEngineClientService productEngineClientService;
 
     @Transactional
     public Application createApplication(ClientDto clientDto, CreateRequestDto createRequestDto) {
@@ -27,5 +30,11 @@ public class ApplicationRequestService {
 
     public void cancelApplication(CancelRequestDto dto) {
         applicationOperationService.cancelApplication(dto.applicationId());
+    }
+
+    // TODO: add transactional outbox for data consistency
+    public void changeStatus(ChangeApplicationStatusDto dto) {
+        applicationOperationService.changeApplicationStatus(dto);
+        productEngineClientService.activateAgreementAndCreateSchedule(dto);
     }
 }

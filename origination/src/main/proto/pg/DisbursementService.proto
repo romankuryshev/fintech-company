@@ -15,6 +15,7 @@ service DisbursementConfirmService{
 message ChangeStatusRequest {
   string agreementId = 1;
   string status = 2;
+  string disbursementDate = 3;
 }
 
 message DisbursementRequest {

@@ -13,10 +13,11 @@ import net.devh.boot.grpc.server.service.GrpcService;
 public class DisbursementConfirmationController extends DisbursementConfirmServiceGrpc.DisbursementConfirmServiceImplBase {
 
     private final ApplicationRequestService applicationRequestService;
+    private final ChangeApplicationMapper mapper;
 
     @Override
     public void changeStatus(ChangeStatusRequest request, StreamObserver<Empty> responseObserver) {
-        applicationRequestService.changeStatus(request);
+        applicationRequestService.changeStatus(mapper.toDto(request));
 
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();

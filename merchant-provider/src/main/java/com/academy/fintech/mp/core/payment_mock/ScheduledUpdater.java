@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduledUpdater {
 
-    private static final int SCHEDULED_RATE = 60000;
+    private static final int SCHEDULED_RATE = 1000;
 
     private final DisbursementService disbursementService;
 

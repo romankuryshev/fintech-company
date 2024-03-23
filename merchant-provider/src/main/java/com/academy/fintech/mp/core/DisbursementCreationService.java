@@ -4,11 +4,13 @@ import com.academy.fintech.mp.core.db.DisbursementService;
 import com.academy.fintech.mp.core.db.DisbursementStatus;
 import com.academy.fintech.mp.public_interface.CreateDisbursementRequest;
 import com.academy.fintech.mp.core.db.Disbursement;
+import com.academy.fintech.mp.public_interface.DisbursementStatusResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -16,15 +18,21 @@ import java.time.LocalDateTime;
 public class DisbursementCreationService {
 
     private static final int MIN_DELAY_IN_MINUTES = 1;
-    private static final int MAX_DELAY_IN_MINUTES = 10;
+    private static final int MAX_DELAY_IN_MINUTES = 10;  // for 7 days: 60 * 24 * 7 = 10080
 
     private final DisbursementService disbursementService;
 
     public void createDisbursement(CreateDisbursementRequest request) {
         Disbursement disbursement = createEntity(request);
-        log.info("Request: {}", request);
-        log.info("Disbursement: {}", disbursement);
         disbursementService.save(disbursement);
+    }
+
+    public DisbursementStatusResponse getStatus(UUID agreementId) {
+        Disbursement disbursement = disbursementService.getDisbursementBy(agreementId);
+        return DisbursementStatusResponse.builder()
+                .agreementId(disbursement.getAgreementId())
+                .status(disbursement.getStatus())
+                .build();
     }
 
     private Disbursement createEntity(CreateDisbursementRequest request) {

@@ -1,12 +1,10 @@
 package com.academy.fintech.pg.core.disbursement;
 
 import com.academy.fintech.pg.core.client.origination.OriginationClientService;
-import com.academy.fintech.pg.core.client.pe.ProductEngineClientService;
 import com.academy.fintech.pg.core.client.provider.merchant.MerchantProviderService;
 import com.academy.fintech.pg.core.disbursement.db.Disbursement;
 import com.academy.fintech.pg.core.disbursement.db.DisbursementService;
 import com.academy.fintech.pg.core.disbursement.db.DisbursementStatus;
-import com.academy.fintech.pg.core.payments.db.PaymentService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +17,12 @@ import java.util.function.Function;
 @Component
 public class ScheduledProviderPoller {
 
-    private static final int FIXED_RATE = 60000;
+    private static final int FIXED_RATE = 1000;
 
     private final DisbursementService disbursementService;
     private final MerchantProviderService merchantProviderService;
     private final OriginationClientService originationClientService;
-    private Map<Integer, Function<LocalDateTime, LocalDateTime>> checkTimings;
+    private final Map<Integer, Function<LocalDateTime, LocalDateTime>> checkTimings;
 
     public ScheduledProviderPoller(DisbursementService disbursementService, MerchantProviderService merchantProviderService, OriginationClientService originationClientService) {
         this.merchantProviderService = merchantProviderService;

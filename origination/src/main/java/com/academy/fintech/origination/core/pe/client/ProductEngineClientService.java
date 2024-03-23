@@ -2,8 +2,10 @@ package com.academy.fintech.origination.core.pe.client;
 
 import com.academy.fintech.origination.core.pe.client.grpc.ProductEngineGrpcClient;
 import com.academy.fintech.origination.core.service.application.db.application.Application;
+import com.academy.fintech.origination.grpc.service.disbursement.dto.ChangeApplicationStatusDto;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.AgreementRequest;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.AgreementResponse;
+import com.academy.fintech.pe.grpc.service.agreement.payment_schedule.PaymentScheduleRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,10 @@ public class ProductEngineClientService {
         return mapAgreementResponseToUuid(response);
     }
 
+    public void activateAgreementAndCreateSchedule(ChangeApplicationStatusDto dto) {
+        productEngineGrpcClient.createSchedule(mapToPaymentRequest(dto));
+    }
+
     private AgreementRequest mapToAgreementRequest(Application application) {
         return AgreementRequest.newBuilder()
                 .setProductCode(DEFAULT_PRODUCT_CODE)
@@ -40,5 +46,12 @@ public class ProductEngineClientService {
 
     private UUID mapAgreementResponseToUuid(AgreementResponse response) {
         return UUID.fromString(response.getId());
+    }
+
+    private PaymentScheduleRequest mapToPaymentRequest(ChangeApplicationStatusDto dto) {
+        return PaymentScheduleRequest.newBuilder()
+                .setAgreementId(dto.agreementId().toString())
+                .setDisbursementDate(dto.disbursementDate().toString())
+                .build();
     }
 }

@@ -8,6 +8,7 @@ import com.academy.fintech.origination.core.service.application.domain_service.e
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationCancelingException;
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationNotFoundException;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CreateRequestDto;
+import com.academy.fintech.origination.grpc.service.disbursement.dto.ChangeApplicationStatusDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -67,5 +68,13 @@ public class ApplicationOperationService {
         applicationService.save(application);
     }
 
-
+    public void changeApplicationStatus(ChangeApplicationStatusDto dto) {
+        Application application = applicationService.findByAgreementId(dto.agreementId());
+        if (application == null) {
+            log.error("application doesn't exists. agreementId - " + dto.agreementId());
+            throw new ApplicationNotFoundException("Application with agreementId " + dto.agreementId() + " not found.");
+        }
+        application.setStatus(ApplicationStatus.ACTIVE);
+        applicationService.save(application);
+    }
 }

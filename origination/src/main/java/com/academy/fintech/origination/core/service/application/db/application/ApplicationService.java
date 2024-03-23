@@ -30,4 +30,8 @@ public class ApplicationService {
     public List<Application> findAllApplicationsByStatus(ApplicationStatus status) {
         return applicationRepository.findAllByStatus(status);
     }
+
+    public Application findByAgreementId(UUID agreementId) {
+        return applicationRepository.findByAgreementId(agreementId);
+    }
 }
