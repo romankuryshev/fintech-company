@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.academy.fintech.pg.payment_processing_service;
+
+option java_multiple_files = true;
+
+service PaymentProcessingService{
+  rpc Process(ProcessPaymentRequest) returns (Empty);
+}
+
+message ProcessPaymentRequest{
+  int64 id = 1;
+  string agreementId = 2;
+  string amount = 3;
+}
+
+message Empty{
+}
+

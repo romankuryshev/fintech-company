@@ -50,6 +50,7 @@ public class ProductEngineClientService {
         ClientAgreementsRequest request = clientAgreementMapper.toRequest(clientId);
 
         ClientAgreementsResponse response = productEngineGrpcClient.getClientAgreements(request);
+        log.info("Response from PE {}", response);
         return clientAgreementMapper.toModel(response.getAgreementsList());
     }
 

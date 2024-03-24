@@ -17,11 +17,13 @@ import com.academy.fintech.scoring.application_processing.ProductResponse;
 import com.academy.fintech.scoring.application_processing.ScoringDataServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Slf4j
 @GrpcService
 @AllArgsConstructor
 public class StatisticController extends ScoringDataServiceGrpc.ScoringDataServiceImplBase {
@@ -39,7 +41,7 @@ public class StatisticController extends ScoringDataServiceGrpc.ScoringDataServi
     @Override
     public void getProduct(ProductRequest request, StreamObserver<ProductResponse> responseObserver) {
         Product product = statisticService.getProduct(request.getProductCode());
-
+        log.info("request");
         ProductResponse response = productMapper.toResponse(product);
 
         responseObserver.onNext(response);
@@ -49,7 +51,7 @@ public class StatisticController extends ScoringDataServiceGrpc.ScoringDataServi
     @Override
     public void getClientAgreements(ClientAgreementsRequest request, StreamObserver<ClientAgreementsResponse> responseObserver) {
         ClientAgreementDto agreementDto = statisticService.getClientAgreements(UUID.fromString(request.getClientId()));
-
+        log.info("request");
         ClientAgreementsResponse response = clientAgreementsMapper.toResponse(agreementDto);
 
         responseObserver.onNext(response);
