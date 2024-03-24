@@ -51,6 +51,7 @@ services:
     build: payment-gate/
     restart: no
     ports:
+      - '8081:8080'
       - '9096:9096'
     links:
       - product-engine

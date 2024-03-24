@@ -1,4 +1,4 @@
-package com.academy.fintech.pg.core.payments.db;
+package com.academy.fintech.pe.core.service.account.db;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,29 +9,30 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
+public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "account_id")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID accountId;
 
-    @Column(name = "agreementId")
+    @Column(name = "agreement_id")
     private UUID agreementId;
 
-    @Column(name = "amount")
-    private BigDecimal amount;
+    @Column(name = "balance")
+    private BigDecimal balance;
 
-    @Column(name = "date")
-    private LocalDateTime dateTime;
+    @Column(name = "duty")
+    private BigDecimal duty;
 }

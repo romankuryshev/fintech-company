@@ -7,7 +7,7 @@ import com.academy.fintech.pg.public_interface.PaymentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +16,6 @@ public class PaymentProcessingService {
     private final PaymentService paymentService;
 
     public final ProductEngineClientService productEngineClientService;
-
 
     public Payment processPayment(PaymentDto paymentDto) {
         Payment payment = createEntityFromDto(paymentDto);
@@ -28,7 +27,7 @@ public class PaymentProcessingService {
     private Payment createEntityFromDto(PaymentDto paymentDto) {
         return Payment.builder()
                 .agreementId(paymentDto.agreementId())
-                .date(LocalDate.now())
+                .dateTime(LocalDateTime.now())
                 .amount(paymentDto.amount())
                 .build();
     }

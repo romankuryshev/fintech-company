@@ -19,13 +19,13 @@ payment-gate:
       merchant:
         host: http://merchant-provider
         port: 8080
-    pe:
-      host: http://product-engine
-      port: 8080
   grpc:
     origination:
       host: origination
       port: 9094
+    pe:
+      host: product-engine
+      port: 9090
 
 grpc:
   server:

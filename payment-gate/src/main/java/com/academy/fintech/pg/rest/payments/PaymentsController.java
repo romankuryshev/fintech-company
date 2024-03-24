@@ -6,6 +6,7 @@ import com.academy.fintech.pg.public_interface.PaymentDto;
 import com.academy.fintech.pg.public_interface.mapper.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +18,7 @@ public class PaymentsController {
     private final PaymentMapper paymentMapper;
 
     @PostMapping("/payments/create")
-    public CreatePaymentResponse createPayment(PaymentDto paymentDto) {
+    public CreatePaymentResponse createPayment(@RequestBody PaymentDto paymentDto) {
         Payment payment = paymentProcessingService.processPayment(paymentDto);
         return paymentMapper.toCreatePaymentResponse(payment);
     }

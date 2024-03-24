@@ -9,7 +9,7 @@ CREATE TABLE disbursement
 
 CREATE TABLE payment
 (
-    id           bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id           bigint PRIMARY KEY,
     agreement_id uuid      NOT NULL,
     amount       numeric   NOT NULL,
     date         timestamp NOT NULL

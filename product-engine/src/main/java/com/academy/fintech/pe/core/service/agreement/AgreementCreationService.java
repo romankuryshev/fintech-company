@@ -1,31 +1,33 @@
 package com.academy.fintech.pe.core.service.agreement;
 
+import com.academy.fintech.pe.core.service.account.db.AccountService;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
 import com.academy.fintech.pe.core.service.agreement.db.product.Product;
 import com.academy.fintech.pe.core.service.agreement.db.product.ProductService;
 import com.academy.fintech.pe.core.service.agreement.exception.InvalidAgreementParametersException;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.dto.AgreementDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class AgreementCreationService {
 
     private final AgreementService agreementService;
 
     private final ProductService productService;
 
-    public AgreementCreationService(AgreementService agreementService, ProductService productService) {
-        this.agreementService = agreementService;
-        this.productService = productService;
-    }
+    private final AccountService accountService;
 
+    @Transactional
     public Agreement createAgreement(AgreementDto agreementDto) {
         Product product = productService.getProduct(agreementDto.productCode());
 
@@ -35,7 +37,9 @@ public class AgreementCreationService {
             throw new InvalidAgreementParametersException(validationErrors);
         }
 
-        return agreementService.create(agreementDto, product);
+        Agreement agreement = agreementService.create(agreementDto, product);
+        accountService.create(agreement.getId());
+        return agreement;
     }
 
     private List<String> validateAgreementDto(AgreementDto agreementDto, Product product) {
