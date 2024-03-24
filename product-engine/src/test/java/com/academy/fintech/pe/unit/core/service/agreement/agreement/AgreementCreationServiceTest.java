@@ -1,5 +1,6 @@
 package com.academy.fintech.pe.unit.core.service.agreement.agreement;
 
+import com.academy.fintech.pe.core.service.account.db.AccountService;
 import com.academy.fintech.pe.core.service.agreement.AgreementCreationService;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
@@ -30,6 +31,9 @@ public class AgreementCreationServiceTest {
 
     @Mock
     private AgreementService agreementService;
+
+    @Mock
+    private AccountService accountService;
 
     @Mock
     private ProductService productService;
