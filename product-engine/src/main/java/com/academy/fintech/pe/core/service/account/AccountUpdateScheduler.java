@@ -12,14 +12,14 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ScheduledAccountUpdater {
+public class AccountUpdateScheduler {
 
     private final AgreementService agreementService;
-    private final TransactionTemplate transactionTemplate;
+    private final TransactionUpdater transactionUpdater;
 
     @Scheduled(cron = "0 0 2 * * *", zone = "Europe/Moscow")
     public void updateAccounts() {
         List<Agreement> overdueAgreements = agreementService.getAllNewOverdueAgreements();
-        overdueAgreements.forEach(transactionTemplate::update);
+        overdueAgreements.forEach(transactionUpdater::update);
     }
 }

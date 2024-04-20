@@ -14,7 +14,7 @@ import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
-public class TransactionTemplate {
+public class TransactionUpdater {
     private final AccountService accountService;
     private final LoanPaymentService loanPaymentService;
     private final PaymentScheduleService paymentScheduleService;
