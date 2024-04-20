@@ -4,53 +4,22 @@ import com.academy.fintech.pe.core.service.account.db.Account;
 import com.academy.fintech.pe.core.service.account.db.AccountService;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
-import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPayment;
-import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPaymentService;
-import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPaymentStatus;
-import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.PaymentSchedule;
-import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.PaymentScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class ScheduledAccountUpdater {
 
-    private final AccountService accountService;
-
     private final AgreementService agreementService;
-
-    private final LoanPaymentService loanPaymentService;
-
-    private final PaymentScheduleService paymentScheduleService;
+    private final TransactionTemplate transactionTemplate;
 
     @Scheduled(cron = "0 0 2 * * *", zone = "Europe/Moscow")
     public void updateAccounts() {
         List<Agreement> overdueAgreements = agreementService.getAllNewOverdueAgreements();
-        overdueAgreements.forEach(this::update);
-    }
-
-    @Transactional
-    public void update(Agreement agreement) {
-        PaymentSchedule schedule = paymentScheduleService.getActualSchedule(agreement);
-        LoanPayment payment = loanPaymentService.getByScheduleAndDate(schedule, LocalDate.now());
-        Account account = accountService.getByAgreementId(agreement.getId());
-
-        if (accountService.reduceBalance(account, payment.getPeriodPayment())) {
-            payment.setStatus(LoanPaymentStatus.PAID);
-        } else {
-            payment.setStatus(LoanPaymentStatus.OVERDUE);
-        }
-
-        LoanPayment nextPayment = loanPaymentService.getByScheduleIdAndPeriodNumber(schedule, payment.getPeriodNumber());
-        agreement.setNextPaymentDate(nextPayment.getPaymentDate());
-
-        accountService.save(account);
-        loanPaymentService.save(payment);
+        overdueAgreements.forEach(transactionTemplate::update);
     }
 }
