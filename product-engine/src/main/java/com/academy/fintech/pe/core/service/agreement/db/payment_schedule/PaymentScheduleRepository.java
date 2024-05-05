@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface PaymentScheduleRepository extends JpaRepository<PaymentSchedule, Long> {
     Integer countPaymentScheduleByAgreement(Agreement agreement);
     Optional<PaymentSchedule> findByAgreementIdAndVersion(UUID AgreementId, int version);
+
+    PaymentSchedule findFirstByAgreementOrderByVersionAsc(Agreement agreement);
 }
