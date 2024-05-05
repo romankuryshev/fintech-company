@@ -41,3 +41,13 @@ origination:
         host: scoring
 #        host: localhost
         port: 9095
+    pg:
+      grpc:
+        host: payment-gate
+#        host: localhost
+        port: 9096
+    product-engine:
+      grpc:
+        host: product-engine
+#        host: localhost
+        port: 9090

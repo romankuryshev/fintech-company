@@ -3,3 +3,5 @@ databaseChangeLog:
       file: classpath:/db/changelog/001-initial-schema.sql
   - include:
       file: classpath:/db/changelog/002-insert-cash-loan.sql
+  - include:
+      file: classpath:/db/changelog/003-add-account-table.sql

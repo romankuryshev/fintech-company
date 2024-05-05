@@ -1,0 +1,14 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.change-log-master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://db:5432/merchant_provider
+#    url: jdbc:postgresql://localhost:5433/merchant_provider
+    username: postgres
+    password: postgres

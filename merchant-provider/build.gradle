@@ -1,0 +1,19 @@
+plugins {
+    alias(libs.plugins.protobuf.plugin)
+    alias(libs.plugins.spring.plugin)
+}
+
+dependencies {
+    implementation libs.spring.jpa
+    implementation libs.spring.validator
+    implementation libs.spring.web.flux
+
+    implementation libs.liquibase
+    implementation libs.javax.annotation
+    implementation libs.postgresql.driver
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstructAnnotationProcessor
+
+    testImplementation libs.spring.test
+}

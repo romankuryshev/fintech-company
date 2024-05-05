@@ -26,6 +26,8 @@ services:
     ports:
       - '9094:9094'
     links:
+      - payment-gate
+      - product-engine
       - scoring
       - db
 
@@ -44,6 +46,21 @@ services:
       - '9095:9095'
     links:
       - product-engine
+
+  payment-gate:
+    build: payment-gate/
+    restart: no
+    ports:
+      - '8081:8080'
+      - '9096:9096'
+    links:
+      - product-engine
+
+  merchant-provider:
+    build: merchant-provider/
+    restart: no
+    ports:
+      - '8080:8080'
 
 volumes:
   db:

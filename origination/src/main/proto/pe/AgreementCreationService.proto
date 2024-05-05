@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package com.academy.fintech.pe.grpc.service.agreement.agreement;
+option java_multiple_files = true;
+
+service AgreementCreationService{
+  rpc Create(AgreementRequest) returns (AgreementResponse) {}
+}
+
+message AgreementRequest{
+  string productCode= 1;
+  string clientId = 2;
+  string interest = 3;
+  int32 term = 4;
+  string disbursementAmount = 5;
+  string originationAmount = 6;
+}
+
+message AgreementResponse{
+  string id = 1;
+}

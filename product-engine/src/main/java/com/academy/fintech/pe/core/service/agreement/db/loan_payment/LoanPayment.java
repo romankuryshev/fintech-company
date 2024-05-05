@@ -66,4 +66,8 @@ public class LoanPayment {
     @NotNull
     @Column(name = "period_number")
     private int periodNumber;
+
+    public BigDecimal getPaymentAmount() {
+        return interestPayment.add(periodPayment.add(principalPayment));
+    }
 }
