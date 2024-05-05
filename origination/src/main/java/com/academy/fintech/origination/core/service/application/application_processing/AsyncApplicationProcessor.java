@@ -41,7 +41,7 @@ public class AsyncApplicationProcessor {
             paymentGateClientService.executePayment(application);
         }
 
-        applicationService.save(application);
+        applicationService.saveAndSendToDwh(application);
         emailClientService.sendApplicationStatusNotification(application);
     }
 }

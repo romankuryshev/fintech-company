@@ -6,5 +6,3 @@ include 'api'
 include 'origination'
 include 'scoring'
 include 'merchant-provider'
-include 'dwh-kafka'
-

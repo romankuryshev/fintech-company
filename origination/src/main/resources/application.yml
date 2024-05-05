@@ -14,7 +14,8 @@ spring:
     password: postgres
 
   kafka:
-    bootstrap-servers: kafka:29092,kafka-2:29093
+    bootstrap-servers: kafka:9092,kafka-2:9092
+#    bootstrap-servers: localhost:29092,localhost:39092
 
   mail:
     properties:

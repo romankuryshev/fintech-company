@@ -5,7 +5,7 @@ import com.academy.fintech.origination.core.service.application.db.dwh.message.D
 import com.academy.fintech.origination.core.service.application.db.dwh.message.DwhMessageService;
 import com.academy.fintech.origination.core.service.application.db.dwh.message.RetryStatus;
 import com.academy.fintech.origination.core.service.application.dwh.sending.service.dto.ApplicationMessage;
-import com.academy.fintech.origination.core.service.application.dwh.sending.service.mapper.ApplicationMapper;
+import com.academy.fintech.origination.grpc.service.application.v1.mapper.ApplicationMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

@@ -6,6 +6,7 @@ import com.academy.fintech.origination.core.service.application.db.application.A
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.Client;
 import com.academy.fintech.origination.core.service.application.db.client.ClientService;
+import com.academy.fintech.origination.core.service.application.dwh.sending.service.KafkaSenderService;
 import io.grpc.Metadata;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -13,6 +14,7 @@ import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -43,6 +45,9 @@ public class ApplicationControllerIT {
 
     @Autowired
     private ClientService clientService;
+
+    @MockBean
+    private KafkaSenderService kafkaSenderService;
 
     @GrpcClient("testClient")
     private ApplicationServiceGrpc.ApplicationServiceBlockingStub client;
