@@ -1,4 +1,5 @@
 [versions]
+spring-kafka = "3.0.16"
 spring-boot = "3.1.4"
 grpc = "1.58.0"
 mapstruct = "1.5.5.Final"
@@ -18,6 +19,7 @@ spring-test = { module = "org.springframework.boot:spring-boot-starter-test", ve
 spring-grpc = {module = "net.devh:grpc-spring-boot-starter", version = "2.15.0.RELEASE"}
 spring-email = {module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot"}
 spring-web-flux = {module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring-boot" }
+spring-kafka = {module = "org.springframework.kafka:spring-kafka", version.ref = "spring-kafka"}
 
 
 # grpc

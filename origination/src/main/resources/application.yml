@@ -13,6 +13,9 @@ spring:
     username: postgres
     password: postgres
 
+  kafka:
+    bootstrap-servers: kafka:29092,kafka-2:29093
+
   mail:
     properties:
       mail:
@@ -51,3 +54,7 @@ origination:
         host: product-engine
 #        host: localhost
         port: 9090
+  kafka:
+    topic:
+      application-creation:
+        name: application.creation.v1

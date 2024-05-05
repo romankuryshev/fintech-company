@@ -4,14 +4,18 @@ import com.academy.fintech.origination.core.service.application.db.application.A
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationService;
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.Client;
+import com.academy.fintech.origination.core.service.application.db.dwh.message.DwhMessageService;
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationAlreadyExistsException;
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationCancelingException;
 import com.academy.fintech.origination.core.service.application.domain_service.exception.ApplicationNotFoundException;
+import com.academy.fintech.origination.core.service.application.dwh.sending.service.KafkaSenderService;
 import com.academy.fintech.origination.grpc.service.application.v1.dto.CreateRequestDto;
 import com.academy.fintech.origination.grpc.service.disbursement.dto.ChangeApplicationStatusDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +26,7 @@ import java.util.UUID;
 public class ApplicationOperationService {
 
     private final ApplicationService applicationService;
+    private final KafkaSenderService kafkaSenderService;
 
     /**
      * Метод создает новую заявку на кредит.
@@ -30,6 +35,7 @@ public class ApplicationOperationService {
      * @return новая заявка
      * @throws ApplicationAlreadyExistsException  если у клиента уже существует заявка с такими же данными
      */
+    @Transactional
     public Application createApplication(Client client, CreateRequestDto requestDto) {
         List<Application> clientApplications = applicationService.findAllByClient(client);
 
@@ -49,6 +55,12 @@ public class ApplicationOperationService {
                 .build();
 
         applicationService.save(application);
+        try {
+            kafkaSenderService.createMessage(application);
+        } catch (JsonProcessingException e) {
+            log.error("Dwh message serialization error, applicationId: {}", application.getId());
+            throw new RuntimeException(e);
+        }
         return application;
     }
 

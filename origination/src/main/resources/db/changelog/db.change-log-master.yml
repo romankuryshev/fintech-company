@@ -1,7 +1,3 @@
 databaseChangeLog:
-  - include:
-      file: classpath:/db/changelog/001-initial-schema.sql
-  - include:
-      file: classpath:/db/changelog/002-add-new-application-status.sql
-  - include:
-      file: classpath:/db/changelog/003-add-column-agreement-id.sql
+  - includeAll:
+      path: /db/changelog/migrations
