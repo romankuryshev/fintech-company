@@ -41,7 +41,6 @@ public class StatisticController extends ScoringDataServiceGrpc.ScoringDataServi
     @Override
     public void getProduct(ProductRequest request, StreamObserver<ProductResponse> responseObserver) {
         Product product = statisticService.getProduct(request.getProductCode());
-        log.info("request");
         ProductResponse response = productMapper.toResponse(product);
 
         responseObserver.onNext(response);
@@ -51,7 +50,6 @@ public class StatisticController extends ScoringDataServiceGrpc.ScoringDataServi
     @Override
     public void getClientAgreements(ClientAgreementsRequest request, StreamObserver<ClientAgreementsResponse> responseObserver) {
         ClientAgreementDto agreementDto = statisticService.getClientAgreements(UUID.fromString(request.getClientId()));
-        log.info("request");
         ClientAgreementsResponse response = clientAgreementsMapper.toResponse(agreementDto);
 
         responseObserver.onNext(response);

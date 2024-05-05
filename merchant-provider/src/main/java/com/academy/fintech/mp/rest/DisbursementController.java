@@ -18,12 +18,12 @@ public class DisbursementController {
 
     private final DisbursementCreationService disbursementCreationService;
 
-    @PostMapping("/disbursement/create")
+    @PostMapping("/disbursements")
     public void createDisbursement(@RequestBody CreateDisbursementRequest request) {
         disbursementCreationService.createDisbursement(request);
     }
 
-    @GetMapping("/disbursement/{agreementId}/status")
+    @GetMapping("/disbursements/{agreementId}/status")
     public DisbursementStatusResponse getStatus(@PathVariable UUID agreementId) {
         return disbursementCreationService.getStatus(agreementId);
     }

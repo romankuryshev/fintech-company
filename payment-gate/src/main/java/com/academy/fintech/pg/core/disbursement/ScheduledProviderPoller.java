@@ -18,6 +18,7 @@ import java.util.function.Function;
 public class ScheduledProviderPoller {
 
     private static final int FIXED_RATE = 1000;
+    private static final int CHECK_LIMIT = 6;
 
     private final DisbursementService disbursementService;
     private final MerchantProviderService merchantProviderService;
@@ -44,11 +45,11 @@ public class ScheduledProviderPoller {
 
         disbursementList.forEach(disbursement -> {
             DisbursementStatus status = merchantProviderService.checkStatus(disbursement);
-            if (status == DisbursementStatus.COMPLETED) {
+            if (DisbursementStatus.COMPLETED.equals(status)) {
                 disbursement.setStatus(status);
                 originationClientService.confirmDisbursement(disbursement);
             }
-            else if (disbursement.getCheckCount() < 6){
+            else if (disbursement.getCheckCount() < CHECK_LIMIT){
                 int count = disbursement.incrementCheckCount();
                 disbursement.setNextCheckDate(checkTimings.get(count).apply(disbursement.getDateTime()));
             }
