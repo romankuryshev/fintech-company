@@ -1,5 +1,7 @@
 package com.academy.fintech.pe.core.service.account;
 
+import com.academy.fintech.pe.core.service.account.db.Account;
+import com.academy.fintech.pe.core.service.account.db.AccountService;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPayment;
 import com.academy.fintech.pe.core.service.agreement.db.loan_payment.LoanPaymentService;
