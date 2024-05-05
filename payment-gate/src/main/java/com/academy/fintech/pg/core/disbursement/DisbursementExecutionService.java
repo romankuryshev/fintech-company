@@ -16,15 +16,15 @@ public class DisbursementExecutionService {
 
     private static final int FIRST_CHECK_INTERVAL = 1;
 
-    private final DisbursementService disbursementService;
+    private final DisbursementService disbursementDbService;
 
-    private final MerchantProviderService merchantProviderService;
+    private final MerchantProviderService merchantProviderClientService;
 
     public void executeDisbursement(DisbursementDto disbursementDto) {
         Disbursement disbursement = createEntityFromDto(disbursementDto);
-        disbursementService.save(disbursement);
+        disbursementDbService.save(disbursement);
 
-        merchantProviderService.sendDisbursement(disbursement);
+        merchantProviderClientService.sendDisbursement(disbursement);
     }
 
     private Disbursement createEntityFromDto(DisbursementDto disbursementDto) {

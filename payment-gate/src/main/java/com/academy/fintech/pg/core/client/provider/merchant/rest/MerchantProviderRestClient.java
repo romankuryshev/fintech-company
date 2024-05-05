@@ -11,8 +11,8 @@ import java.util.UUID;
 @Component
 public class MerchantProviderRestClient {
 
-    private static final String DISBURSEMENT_CREATE_URI = "/disbursement/create";
-    private static final String CHECK_DISBURSEMENT_URI = "/disbursement/%s/status";
+    private static final String DISBURSEMENT_CREATE_URI = "/disbursements";
+    private static final String CHECK_DISBURSEMENT_URI = "/disbursements/%s/status";
     private final WebClient webClient;
 
     public MerchantProviderRestClient(MerchantProviderRestClientProperty property) {
