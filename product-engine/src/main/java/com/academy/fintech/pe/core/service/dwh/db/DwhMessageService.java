@@ -1,4 +1,4 @@
-package com.academy.fintech.origination.core.service.application.db.dwh.message;
+package com.academy.fintech.pe.core.service.dwh.db;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

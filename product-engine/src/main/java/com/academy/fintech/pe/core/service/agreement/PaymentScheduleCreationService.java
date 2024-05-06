@@ -68,7 +68,7 @@ public class PaymentScheduleCreationService {
 
         loanPaymentService.saveAll(payments);
         paymentScheduleService.save(schedule);
-        agreementService.save(agreement);
+        agreementService.saveAndSendToDwh(agreement);
         return schedule;
     }
 

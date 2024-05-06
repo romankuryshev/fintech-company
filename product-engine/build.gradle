@@ -30,6 +30,7 @@ dependencies {
     implementation libs.spring.jpa
     implementation libs.spring.validator
     implementation libs.spring.grpc
+    implementation libs.spring.kafka
 
     implementation libs.javax.annotation
     implementation libs.postgresql.driver

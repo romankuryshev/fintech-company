@@ -13,6 +13,16 @@ spring:
     username: postgres
     password: postgres
 
+  kafka:
+    bootstrap-servers: kafka:9092,kafka-2:9092
+#      bootstrap-servers: localhost:29092,localhost:39092
+
 grpc:
   server:
     reflection-service-enabled: true
+
+product-engine:
+  kafka:
+    topic:
+      agreement-status:
+        name: agreement.status.v1

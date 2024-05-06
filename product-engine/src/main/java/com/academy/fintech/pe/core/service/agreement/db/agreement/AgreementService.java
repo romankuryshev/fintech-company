@@ -1,7 +1,10 @@
 package com.academy.fintech.pe.core.service.agreement.db.agreement;
 
 import com.academy.fintech.pe.core.service.agreement.db.product.Product;
+import com.academy.fintech.pe.core.service.dwh.KafkaSenderService;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.dto.AgreementDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
@@ -11,13 +14,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AgreementService {
 
     private final AgreementRepository agreementRepository;
-
-    public AgreementService(AgreementRepository agreementRepository) {
-        this.agreementRepository = agreementRepository;
-    }
+    public final KafkaSenderService kafkaSenderService;
 
     public Agreement create(AgreementDto agreementDto, Product product) {
         var agreement = Agreement.builder()
@@ -30,7 +31,7 @@ public class AgreementService {
                 .status(AgreementStatus.NEW)
                 .build();
 
-        return agreementRepository.save(agreement);
+        return saveAndSendToDwh(agreement);
     }
 
     @Nullable
@@ -49,5 +50,15 @@ public class AgreementService {
 
     public Agreement save(Agreement agreement) {
         return agreementRepository.save(agreement);
+    }
+
+    public Agreement saveAndSendToDwh(Agreement agreement) {
+        agreement = agreementRepository.save(agreement);
+        try {
+            kafkaSenderService.createMessage(agreement);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return agreement;
     }
 }

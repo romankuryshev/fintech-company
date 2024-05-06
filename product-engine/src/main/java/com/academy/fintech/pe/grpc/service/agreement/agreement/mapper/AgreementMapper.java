@@ -1,6 +1,7 @@
 package com.academy.fintech.pe.grpc.service.agreement.agreement.mapper;
 
 import com.academy.fintech.pe.core.service.agreement.db.agreement.Agreement;
+import com.academy.fintech.pe.core.service.dwh.dto.AgreementMessage;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.AgreementRequest;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.AgreementResponse;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.dto.AgreementDto;
@@ -16,6 +17,9 @@ public interface AgreementMapper {
             ".add(new BigDecimal(request.getDisbursementAmount())))")
     AgreementDto requestToDto(AgreementRequest request);
 
-
     AgreementResponse toResponse(Agreement agreement);
+
+    @Mapping(target = "productCode", source = "product.code")
+    @Mapping(target = "eventDatetime", expression = "java( java.time.LocalDateTime.now().toString())")
+    AgreementMessage toMessage(Agreement agreement);
 }

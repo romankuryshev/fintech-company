@@ -22,10 +22,9 @@ import java.util.List;
 public class AgreementCreationService {
 
     private final AgreementService agreementService;
-
     private final ProductService productService;
-
     private final AccountService accountService;
+
 
     @Transactional
     public Agreement createAgreement(AgreementDto agreementDto) {
