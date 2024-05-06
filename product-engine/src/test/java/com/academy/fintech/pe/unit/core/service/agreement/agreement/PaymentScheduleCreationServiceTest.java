@@ -57,7 +57,6 @@ public class PaymentScheduleCreationServiceTest {
         when(agreementService.getById(dto.agreementId())).thenReturn(agreement);
         when(paymentScheduleService.createNewSchedule(agreement)).thenReturn(schedule);
         when(loanPaymentService.saveAll(anyList())).thenReturn(null);
-        when(agreementService.save(any())).thenReturn(null);
 
         // when
         PaymentSchedule actualSchedule = paymentScheduleCreationService.createSchedule(dto);

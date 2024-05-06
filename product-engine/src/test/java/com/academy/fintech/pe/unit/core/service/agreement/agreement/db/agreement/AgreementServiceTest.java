@@ -4,6 +4,7 @@ import com.academy.fintech.pe.core.service.agreement.db.agreement.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementRepository;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
 import com.academy.fintech.pe.core.service.agreement.db.product.Product;
+import com.academy.fintech.pe.core.service.dwh.KafkaSenderService;
 import com.academy.fintech.pe.grpc.service.agreement.agreement.dto.AgreementDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,8 @@ public class AgreementServiceTest {
 
     @Mock
     private AgreementRepository agreementRepository;
+    @Mock
+    private KafkaSenderService kafkaSenderService;
 
     @InjectMocks
     private AgreementService agreementService;
