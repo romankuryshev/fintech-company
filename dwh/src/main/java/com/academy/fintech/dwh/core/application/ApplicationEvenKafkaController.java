@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -25,8 +26,9 @@ public class ApplicationEvenKafkaController {
     private final ApplicationEventService applicationEventService;
 
     @KafkaListener(topics = "${kafka.topic.application-creation.name}", groupId = "dwh-application-1")
-    public void handleMessage(@Header(KafkaHeaders.RECEIVED_KEY) long eventId,
+    public void handleMessage(@Header(KafkaHeaders.RECEIVED_KEY) String applicationId,
                                @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long timestamp,
+                               @Header("idempotency_key") String eventId,
                                String message) {
         ApplicationMessage applicationMessage;
         try {
@@ -39,14 +41,17 @@ public class ApplicationEvenKafkaController {
         if (applicationMessage == null) {
             return;
         }
-        applicationEventService.save(createEvent(applicationMessage, eventId, timestamp));
+        applicationEventService.save(createEvent(applicationMessage, applicationId, eventId, timestamp));
     }
 
-    private ApplicationEvent createEvent(ApplicationMessage applicationMessage, long eventId, long timestamp) {
+    private ApplicationEvent createEvent(ApplicationMessage applicationMessage, String applicationId, String eventId, long timestamp) {
         LocalDateTime eventDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneOffset.ofHours(3));
         ApplicationEvent applicationEvent = applicationMapper.toEntity(applicationMessage);
+
         applicationEvent.setEventDateTime(eventDateTime);
+        applicationEvent.setEventId(Long.parseLong(eventId));
         applicationEvent.setEventDate(eventDateTime.toLocalDate());
+        applicationEvent.setApplicationId(UUID.fromString(applicationId));
         return applicationEvent;
     }
 }

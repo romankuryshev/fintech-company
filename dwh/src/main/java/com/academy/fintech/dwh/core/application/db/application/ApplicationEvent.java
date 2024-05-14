@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@IdClass(ApplicationEventId.class)
 @Table(name ="application_event")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +31,10 @@ public class ApplicationEvent {
     @Id
     @Column(name = "event_id")
     private Long eventId;
+
+    @Id
+    @Column(name = "event_date")
+    private LocalDate eventDate;
 
     @Column(name = "application_id")
     private UUID applicationId;
@@ -47,7 +53,4 @@ public class ApplicationEvent {
 
     @Column(name = "event_date_time")
     private LocalDateTime eventDateTime;
-
-    @Column(name = "event_date")
-    private LocalDate eventDate;
 }

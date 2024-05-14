@@ -8,6 +8,5 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ApplicationMapper {
 
-    @Mapping(target = "applicationId", source = "id")
     ApplicationEvent toEntity(ApplicationMessage applicationMessage);
 }

@@ -1,7 +1,6 @@
 package com.academy.fintech.dwh.core.agreement;
 
 public record AgreementMessage(
-    String id,
     String productCode,
     String clientId,
     String interest,

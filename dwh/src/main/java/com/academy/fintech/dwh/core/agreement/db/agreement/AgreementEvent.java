@@ -3,6 +3,7 @@ package com.academy.fintech.dwh.core.agreement.db.agreement;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@IdClass(AgreementEventId.class)
 @Table(name = "agreement_event")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,6 +29,10 @@ public class AgreementEvent {
     @Id
     @Column(name = "event_id")
     private Long eventId;
+
+    @Id
+    @Column(name = "event_date")
+    private LocalDate eventDate;
 
     @Column(name = "agreement_id")
     private UUID agreementId;
@@ -60,7 +66,4 @@ public class AgreementEvent {
 
     @Column(name = "event_date_time")
     private LocalDateTime eventDateTime;
-
-    @Column(name = "event_date")
-    private LocalDate eventDate;
 }

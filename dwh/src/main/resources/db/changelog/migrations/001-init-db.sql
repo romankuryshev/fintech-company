@@ -11,11 +11,11 @@ CREATE TABLE IF NOT EXISTS agreement_event
     status             varchar(20),
     disbursement_date  timestamp,
     next_payment_date  timestamp,
-    event_date_time     timestamp,
+    event_date_time    timestamp,
     event_date         date      not null,
 
     CONSTRAINT agreement_event_pk PRIMARY KEY (event_id, event_date)
-);
+) PARTITION BY RANGE (event_date);
 
 CREATE TABLE IF NOT EXISTS application_event
 (
@@ -28,4 +28,4 @@ CREATE TABLE IF NOT EXISTS application_event
     event_date_time             timestamp,
     event_date                  timestamp not null ,
     CONSTRAINT application_event_pk PRIMARY KEY (event_id, event_date)
-)
+) PARTITION BY RANGE (event_date);

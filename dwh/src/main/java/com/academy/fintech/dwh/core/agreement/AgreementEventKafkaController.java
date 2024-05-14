@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -25,8 +26,9 @@ public class AgreementEventKafkaController {
     private final ObjectMapper objectMapper;
 
     @KafkaListener(topics = "${kafka.topic.agreement-status.name}", groupId = "dwh-agreement-1")
-    public void handleMessage(@Header(KafkaHeaders.RECEIVED_KEY) long eventId,
+    public void handleMessage(@Header(KafkaHeaders.RECEIVED_KEY) String agreementId,
                                @Header(KafkaHeaders.RECEIVED_TIMESTAMP) long timestamp,
+                               @Header("idempotency_key") String eventId,
                                String message) {
         AgreementMessage agreementMessage;
         try {
@@ -39,15 +41,17 @@ public class AgreementEventKafkaController {
         if (agreementMessage == null) {
             return;
         }
-        agreementEventService.save(createEvent(agreementMessage, eventId, timestamp));
+        agreementEventService.save(createEvent(agreementMessage, agreementId, eventId, timestamp));
     }
 
-    private AgreementEvent createEvent(AgreementMessage agreementMessage, long eventId, long timestamp) {
+    private AgreementEvent createEvent(AgreementMessage agreementMessage, String agreementId, String eventId, long timestamp) {
         LocalDateTime eventDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneOffset.ofHours(3));
         AgreementEvent agreementEvent = agreementMapper.toEntity(agreementMessage);
-        agreementEvent.setEventId(eventId);
+
+        agreementEvent.setEventId(Long.parseLong(eventId));
         agreementEvent.setEventDateTime(eventDateTime);
         agreementEvent.setEventDate(eventDateTime.toLocalDate());
+        agreementEvent.setAgreementId(UUID.fromString(agreementId));
 
         return agreementEvent;
     }

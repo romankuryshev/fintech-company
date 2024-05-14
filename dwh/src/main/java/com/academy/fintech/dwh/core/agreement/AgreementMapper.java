@@ -8,6 +8,5 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AgreementMapper {
 
-    @Mapping(target = "agreementId", source = "id")
     AgreementEvent toEntity(AgreementMessage agreementMessage);
 }
