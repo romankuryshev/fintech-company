@@ -1,0 +1,28 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.change-log-master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  datasource:
+#    url: jdbc:postgresql://db:5432/dwh
+    url: jdbc:postgresql://localhost:5433/dwh
+    username: postgres
+    password: postgres
+
+  kafka:
+#    bootstrap-servers: kafka:9092,kafka-2:9092
+    bootstrap-servers: localhost:29092,localhost:39092
+
+kafka:
+  topic:
+    agreement-status:
+      name: agreement.status.v1
+    application-creation:
+      name: application.creation.v1
+
+server:
+  port: 8089
