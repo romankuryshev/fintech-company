@@ -20,6 +20,5 @@ public interface AgreementMapper {
     AgreementResponse toResponse(Agreement agreement);
 
     @Mapping(target = "productCode", source = "product.code")
-    @Mapping(target = "eventDatetime", expression = "java( java.time.LocalDateTime.now().toString())")
     AgreementMessage toMessage(Agreement agreement);
 }

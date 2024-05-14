@@ -1,5 +1,6 @@
 package com.academy.fintech.pe.configuration;
 
+import com.academy.fintech.pe.core.service.dwh.TopicInformation;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -40,5 +41,11 @@ public class KafkaConfiguration {
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
+    }
+
+    @Bean
+    @ConfigurationProperties("product-engine.kafka.topic.agreement-status")
+    public TopicInformation agreementStatusTopic() {
+        return new TopicInformation();
     }
 }

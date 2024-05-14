@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +17,9 @@ public class DwhMessageService {
         return dwhMessageRepository.findAllByStatus(status);
     }
 
-    public DwhMessage createDwhMessage(String message) {
+    public DwhMessage createDwhMessage(UUID key, String message) {
         DwhMessage dwhMessage = DwhMessage.builder()
+                .key(key)
                 .message(message)
                 .inserted(LocalDateTime.now())
                 .status(RetryStatus.RETRY)

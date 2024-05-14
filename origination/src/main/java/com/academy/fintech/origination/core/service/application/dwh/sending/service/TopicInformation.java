@@ -6,4 +6,5 @@ import lombok.Getter;
 @Data
 public class TopicInformation{
     private String name;
+    private int partitionCount;
 }

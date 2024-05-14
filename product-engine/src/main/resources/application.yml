@@ -8,14 +8,14 @@ spring:
     show-sql: true
 
   datasource:
-    url: jdbc:postgresql://db:5432/product_engine
-#    url: jdbc:postgresql://localhost:5433/product_engine
+#    url: jdbc:postgresql://db:5432/product_engine
+    url: jdbc:postgresql://localhost:5433/product_engine
     username: postgres
     password: postgres
 
   kafka:
-    bootstrap-servers: kafka:9092,kafka-2:9092
-#      bootstrap-servers: localhost:29092,localhost:39092
+#    bootstrap-servers: kafka:9092,kafka-2:9092
+      bootstrap-servers: localhost:29092,localhost:39092
 
 grpc:
   server:
@@ -26,3 +26,4 @@ product-engine:
     topic:
       agreement-status:
         name: agreement.status.v1
+        partition-count: 2

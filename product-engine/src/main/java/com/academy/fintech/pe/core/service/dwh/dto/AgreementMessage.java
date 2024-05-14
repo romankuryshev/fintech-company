@@ -10,6 +10,5 @@ public record AgreementMessage (
     String originationAmount,
     String status,
     String disbursementDate,
-    String nextPaymentDate,
-    String eventDatetime
+    String nextPaymentDate
 ){}
