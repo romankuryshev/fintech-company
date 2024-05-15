@@ -67,6 +67,10 @@ services:
     ports:
       - '8080:8080'
 
+  dwh:
+    build: dwh/
+    restart: no
+
   zookeeper-1:
     image: confluentinc/cp-zookeeper:7.4.4
     environment:
