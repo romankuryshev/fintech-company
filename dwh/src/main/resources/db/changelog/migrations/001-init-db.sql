@@ -17,6 +17,15 @@ CREATE TABLE IF NOT EXISTS agreement_event
     CONSTRAINT agreement_event_pk PRIMARY KEY (event_id, event_date)
 ) PARTITION BY RANGE (event_date);
 
+select partman.create_parent(
+       p_parent_table := 'public.agreement_event',
+       p_control := 'event_date',
+       p_type := 'native',
+       p_interval := 'P1M',
+       p_start_partition := '2024-05-13 00:00:00'::text,
+       p_premake := 12
+       );
+
 CREATE TABLE IF NOT EXISTS application_event
 (
     event_id                    bigserial not null,
@@ -29,3 +38,16 @@ CREATE TABLE IF NOT EXISTS application_event
     event_date                  timestamp not null ,
     CONSTRAINT application_event_pk PRIMARY KEY (event_id, event_date)
 ) PARTITION BY RANGE (event_date);
+
+select partman.create_parent(
+               p_parent_table := 'public.application_event',
+               p_control := 'event_date',
+               p_type := 'native',
+               p_interval := 'P1M',
+               p_start_partition := '2024-05-13 00:00:00'::text,
+               p_premake := 12
+       );
+
+update partman.part_config
+set  infinite_time_partitions = true
+where parent_table in ('agreement_event', 'application_event');

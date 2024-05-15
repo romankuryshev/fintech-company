@@ -8,14 +8,14 @@ spring:
     show-sql: true
 
   datasource:
-#    url: jdbc:postgresql://db:5432/dwh
-    url: jdbc:postgresql://localhost:5433/dwh
+    url: jdbc:postgresql://db:5432/dwh
+#    url: jdbc:postgresql://localhost:5433/dwh
     username: postgres
     password: postgres
 
   kafka:
-#    bootstrap-servers: kafka:9092,kafka-2:9092
-    bootstrap-servers: localhost:29092,localhost:39092
+    bootstrap-servers: kafka:9092,kafka-2:9092
+#    bootstrap-servers: localhost:29092,localhost:39092
 
 kafka:
   topic:

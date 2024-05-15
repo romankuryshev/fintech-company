@@ -3,12 +3,14 @@ volumes:
   db:
     driver: local
 services:
+
   db:
-    image: postgres:14.1-alpine
+    image: huntress/postgres-partman:14
     restart: always
     volumes:
       - db:/var/lib/postgresql/data
       - ./pg-init-scripts/create-multiple-databases.sql:/docker-entrypoint-initdb.d/create-multiple-databases.sql
+      - ./pg-init-scripts/partman.sh:/docker-entrypoint-initdb.d/partman.sh
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
