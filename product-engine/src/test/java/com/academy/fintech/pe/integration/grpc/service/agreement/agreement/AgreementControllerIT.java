@@ -33,16 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Testcontainers
 @DirtiesContext
 class AgreementControllerIT {
-
     @Container
-    static PostgreSQLContainer<?> postgresSQLContainer = new PostgreSQLContainer<>("postgres:14.1-alpine");
-
+    static PostgreSQLContainer<?> postgresSQLContainer =
+            new PostgreSQLContainer<>("postgres:14.1-alpine");
     @Autowired
     private AgreementRepository agreementRepository;
-
     @GrpcClient("testClient")
     private AgreementCreationServiceGrpc.AgreementCreationServiceBlockingStub client;
-
     @DynamicPropertySource
     static void postgresPropertySource(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgresSQLContainer::getJdbcUrl);

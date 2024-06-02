@@ -4,6 +4,7 @@ spring-boot = "3.1.4"
 grpc = "1.58.0"
 mapstruct = "1.5.5.Final"
 testcontainers = "1.19.1"
+jwt = "0.11.5"
 
 [plugins]
 spring-plugin = { id = "org.springframework.boot", version.ref = "spring-boot" }
@@ -14,9 +15,11 @@ protobuf-plugin = {id = "com.google.protobuf", version = "0.9.4"}
 spring-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
 spring-jpa = {module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
 spring-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
+spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring-boot"}
 spring-validator = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
 spring-grpc = {module = "net.devh:grpc-spring-boot-starter", version = "2.15.0.RELEASE"}
+spring-grpc-client = { module = "net.devh:grpc-client-spring-boot-starter", version = "2.15.0.RELEASE"}
 spring-email = {module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot"}
 spring-web-flux = {module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring-boot" }
 spring-kafka = {module = "org.springframework.kafka:spring-kafka", version.ref = "spring-kafka"}
@@ -43,3 +46,8 @@ testcontainres-jupiter = { module = "org.testcontainers:junit-jupiter", version.
 
 jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.0" }
 grpc-testing = { module = "io.grpc:grpc-testing", version.ref = "grpc" }
+
+# jwt
+jwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jwt" }
+jwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jwt" }
+jwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jwt" }

@@ -71,6 +71,11 @@ services:
     build: dwh/
     restart: no
 
+  user-service:
+    build: user-service/
+    restart: no
+
+
   zookeeper-1:
     image: confluentinc/cp-zookeeper:7.4.4
     environment:

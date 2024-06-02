@@ -7,4 +7,5 @@ include 'origination'
 include 'scoring'
 include 'merchant-provider'
 include 'dwh'
+include 'user-service'
 

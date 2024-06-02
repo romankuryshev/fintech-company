@@ -9,8 +9,8 @@ api:
         port: 9094
 
 user-service:
-  host: http://user-service
-  port: 8080
+  host: http://localhost
+  port: 8081
   api-key: user-service
 
 jwt:

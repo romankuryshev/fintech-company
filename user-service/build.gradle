@@ -1,0 +1,27 @@
+plugins {
+    alias(libs.plugins.spring.plugin)
+}
+
+group = 'com.academy.fintech'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.spring.jpa
+    implementation libs.spring.security
+
+    implementation libs.liquibase
+    implementation libs.javax.annotation
+    implementation libs.postgresql.driver
+
+    implementation libs.jwt.api
+    implementation libs.jwt.impl
+    implementation libs.jwt.jackson
+}
+
+test {
+    useJUnitPlatform()
+}

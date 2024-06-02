@@ -4,13 +4,19 @@ plugins {
 }
 
 dependencies {
-    implementation libs.spring.grpc
+    implementation libs.spring.security
+    implementation libs.spring.grpc.client
     implementation libs.javax.annotation
+    implementation libs.spring.web.flux
 
     implementation libs.protobuf.java.util
     implementation libs.grpc.protobuf
     implementation libs.grpc.stub
     implementation libs.protobuf.java
+
+    implementation libs.jwt.api
+    implementation libs.jwt.impl
+    implementation libs.jwt.jackson
 
     testImplementation libs.spring.test
     testImplementation libs.grpc.testing

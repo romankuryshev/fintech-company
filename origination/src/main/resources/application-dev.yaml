@@ -1,0 +1,58 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.change-log-master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/origination
+    username: postgres
+    password: postgres
+
+  kafka:
+      bootstrap-servers: localhost:29092,localhost:39092
+
+  mail:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+
+server:
+  port: 8084
+
+grpc:
+  server:
+    port: 9094
+    reflection-service-enabled: true
+
+origination:
+  client:
+    scoring:
+      grpc:
+        host: localhost
+        port: 9095
+    pg:
+      grpc:
+        host: localhost
+        port: 9096
+    product-engine:
+      grpc:
+        host: localhost
+        port: 9090
+
+  kafka:
+    topic:
+      application-creation:
+        name: application.creation.v1
+        partition-count: 2
