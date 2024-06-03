@@ -13,6 +13,9 @@ message ProcessApplicationRequest {
   string clientId = 2;
   string clientSalary = 3;
   string disbursementAmount = 4;
+  string productCode = 5;
+  string termInMonths = 6;
+  string interest = 7;
 }
 
 message ProcessApplicationResponse {

@@ -1,5 +1,6 @@
-package com.academy.fintech.api.rest.configuration;
+package com.academy.fintech.api.configuration;
 
+import com.academy.fintech.api.security.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

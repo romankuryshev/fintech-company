@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class EmailClientServiceImpl implements EmailClientService {
-    private static final String STATUS_NOTIFICATION_TEXT = "%s %s, Your application №%s has been reviewed" +
+    private static final String STATUS_NOTIFICATION_TEXT = "Your application №%s has been reviewed" +
             " and it's status has been changed.\n" +
             "Current status of your application: %s\n";
 
@@ -22,7 +22,7 @@ public class EmailClientServiceImpl implements EmailClientService {
     @Override
     public void sendApplicationStatusNotification(Application application) {
         Client client = application.getClient();
-        String messageText = String.format(STATUS_NOTIFICATION_TEXT, client.getFirstName(), client.getLatName(), application.getId(), application.getStatus());
+        String messageText = String.format(STATUS_NOTIFICATION_TEXT, application.getId(), application.getStatus());
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(FROM_ADDRESS);

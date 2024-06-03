@@ -2,7 +2,7 @@ package com.academy.fintech.api.core.origination.client;
 
 
 import com.academy.fintech.api.core.origination.client.grpc.OriginationGrpcClient;
-import com.academy.fintech.api.public_interface.application.dto.ApplicationDto;
+import com.academy.fintech.api.public_interface.application.dto.CreateApplicationRequest;
 import com.academy.fintech.application.CreateRequest;
 import com.academy.fintech.application.CreateResponse;
 import io.grpc.Metadata;
@@ -33,7 +33,7 @@ class OriginationClientServiceTest {
         CreateResponse expectedResponse = CreateResponse.newBuilder()
                 .setApplicationId("00000000-0000-0000-0000-000000000001")
                 .build();
-        ApplicationDto dto = createDto();
+        CreateApplicationRequest dto = createDto();
         when(client.createApplication(any(CreateRequest.class))).thenReturn(expectedResponse);
 
         String applicationId = clientService.createApplication(dto);
@@ -43,7 +43,7 @@ class OriginationClientServiceTest {
 
     @Test
     void givenInvalidDto_whenCreate_thenThrowExceptionAndTrailsHasOldApplicationId() {
-        ApplicationDto dto = createDto();
+        CreateApplicationRequest dto = createDto();
         Status status = ALREADY_EXISTS.withDescription("Already exists");
         Metadata metadata = new Metadata();
         metadata.put(Metadata.Key.of("applicationId", Metadata.ASCII_STRING_MARSHALLER), "00000000-0000-0000-0000-000000000001");
@@ -54,7 +54,7 @@ class OriginationClientServiceTest {
         assertThat(result).isEqualTo("00000000-0000-0000-0000-000000000001");
     }
 
-    private ApplicationDto createDto() {
-        return new ApplicationDto("roman", "kuryshev", "roman@mail.ru", 30_000, 100_000);
+    private CreateApplicationRequest createDto() {
+        return new CreateApplicationRequest( 500000, 30_000 , "CL1.0", "12", "8");
     }
 }

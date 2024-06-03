@@ -10,6 +10,9 @@ public record ProcessApplicationRequestDto (
         UUID applicationId,
         UUID clientId,
         BigDecimal clientSalary,
-        BigDecimal disbursementAmount
+        BigDecimal disbursementAmount,
+        String productCode,
+        int termInMonths,
+        BigDecimal interest
 )
 { }

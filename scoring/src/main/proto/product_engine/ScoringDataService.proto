@@ -34,7 +34,7 @@ message ClientAgreementsResponse {
 
 message AgreementResponse {
   string agreementId = 1;
-  string nextPaymentDate = 2;
+  int32 countExpiredPayments = 2;
 }
 
 message AdvancedPaymentRequest {

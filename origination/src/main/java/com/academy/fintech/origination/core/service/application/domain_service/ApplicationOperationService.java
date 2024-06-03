@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,11 +43,7 @@ public class ApplicationOperationService {
             }
         }
 
-        var application = Application.builder()
-                .client(client)
-                .status(ApplicationStatus.NEW)
-                .requestDisbursementAmount(requestDto.disbursementAmount())
-                .build();
+        var application = buildApplication(requestDto, client);
 
         applicationService.saveAndSendToDwh(application);
         return application;
@@ -76,5 +73,16 @@ public class ApplicationOperationService {
         }
         application.setStatus(ApplicationStatus.ACTIVE);
         applicationService.saveAndSendToDwh(application);
+    }
+
+    private Application buildApplication(CreateRequestDto requestDto, Client client) {
+        return Application.builder()
+                .client(client)
+                .status(ApplicationStatus.NEW)
+                .requestDisbursementAmount(requestDto.disbursementAmount())
+                .interest(new BigDecimal(requestDto.interest()))
+                .productCode(requestDto.productCode())
+                .termInMonths(requestDto.termInMonths())
+                .build();
     }
 }

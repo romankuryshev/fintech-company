@@ -10,6 +10,7 @@ import com.academy.fintech.pe.grpc.service.agreement.statistic.mapper.ClientAgre
 import com.academy.fintech.pe.grpc.service.agreement.statistic.mapper.ProductMapper;
 import com.academy.fintech.scoring.application_processing.AdvancedPaymentRequest;
 import com.academy.fintech.scoring.application_processing.AdvancedPaymentResponse;
+import com.academy.fintech.scoring.application_processing.AgreementResponse;
 import com.academy.fintech.scoring.application_processing.ClientAgreementsRequest;
 import com.academy.fintech.scoring.application_processing.ClientAgreementsResponse;
 import com.academy.fintech.scoring.application_processing.ProductRequest;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j

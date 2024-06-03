@@ -5,7 +5,7 @@ api:
   client:
     origination:
       grpc:
-        host: origination
+        host: localhost
         port: 9094
 
 user-service:

@@ -18,8 +18,6 @@ public class ClientOperationService {
             return client;
 
         client = Client.builder()
-                .firstName(dto.firstName())
-                .latName(dto.lastName())
                 .email(dto.email())
                 .salary(dto.salary())
                 .build();

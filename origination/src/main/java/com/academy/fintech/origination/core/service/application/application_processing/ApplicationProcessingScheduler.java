@@ -13,16 +13,18 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplicationProcessingScheduler {
 
-    private static final int scheduledRate = 10000;
+    private static final int SCHEDULED_RATE = 10000;
 
     private final AsyncApplicationProcessor asyncApplicationProcessor;
 
     private final ApplicationService applicationService;
 
-    @Scheduled(fixedRate = scheduledRate)
+    @Scheduled(fixedRate = SCHEDULED_RATE)
     private void startScheduler() {
         List<Application> newApplications = applicationService.findAllApplicationsByStatus(ApplicationStatus.NEW);
         for(Application app : newApplications) {
+            app.setStatus(ApplicationStatus.SCORING);
+            applicationService.save(app);
             asyncApplicationProcessor.processApplication(app);
         }
     }

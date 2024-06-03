@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public record AgreementDto(
         UUID agreementId,
-        LocalDate nextPaymentDate
+        int countExpiredPayments
 ) {
 }

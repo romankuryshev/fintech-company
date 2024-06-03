@@ -9,13 +9,11 @@ spring:
 
   datasource:
     url: jdbc:postgresql://db:5432/origination
-#    url: jdbc:postgresql://localhost:5433/origination
     username: postgres
     password: postgres
 
   kafka:
     bootstrap-servers: kafka:9092,kafka-2:9092
-#    bootstrap-servers: localhost:29092,localhost:39092
 
   mail:
     properties:
@@ -43,17 +41,14 @@ origination:
     scoring:
       grpc:
         host: scoring
-#        host: localhost
         port: 9095
     pg:
       grpc:
         host: payment-gate
-#        host: localhost
         port: 9096
     product-engine:
       grpc:
         host: product-engine
-#        host: localhost
         port: 9090
   kafka:
     topic:

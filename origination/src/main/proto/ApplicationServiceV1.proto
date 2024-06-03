@@ -11,11 +11,12 @@ service ApplicationService{
 }
 
 message CreateRequest{
-  string firstName = 1;
-  string lastName = 2;
-  string email = 3;
-  string salary = 4;
-  string disbursementAmount = 5;
+  string email = 1;
+  string salary = 2;
+  string disbursementAmount = 3;
+  string productCode = 4;
+  string termInMonths = 5;
+  string interest = 6;
 }
 
 message CreateResponse{

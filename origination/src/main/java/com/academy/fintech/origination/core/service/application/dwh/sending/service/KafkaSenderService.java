@@ -66,7 +66,7 @@ public class KafkaSenderService {
     private ProducerRecord<String, String> createProducerRecord(DwhMessage dwhMessage) {
         List<Header> headers = List.of(new RecordHeader(HEADER_IDEMPOTENCY_KEY, dwhMessage.getId().toString().getBytes()));
         return new ProducerRecord<>(topicInformation.getName(),
-                dwhMessage.getKey().hashCode() % topicInformation.getPartitionCount(),
+                Math.abs(dwhMessage.getKey().hashCode()) % topicInformation.getPartitionCount(),
                 dwhMessage.getKey().toString(),
                 dwhMessage.getMessage(),
                 headers);

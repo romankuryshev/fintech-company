@@ -1,4 +1,4 @@
-package com.academy.fintech.api.rest.configuration;
+package com.academy.fintech.api.security;
 
 import com.academy.fintech.api.security.util.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;

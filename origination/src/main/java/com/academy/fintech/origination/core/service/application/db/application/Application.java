@@ -44,6 +44,15 @@ public class Application {
     @Column(name = "request_disbursement_amount")
     private BigDecimal requestDisbursementAmount;
 
+    @Column(name = "term_in_months")
+    private int termInMonths;
+
+    @Column(name = "interest")
+    private BigDecimal interest;
+
+    @Column(name = "product_code")
+    private String productCode;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;

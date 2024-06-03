@@ -1,4 +1,4 @@
-package com.academy.fintech.api.rest.configuration;
+package com.academy.fintech.api.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

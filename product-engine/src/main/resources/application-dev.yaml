@@ -1,0 +1,27 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.change-log-master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/product_engine
+    username: postgres
+    password: postgres
+
+  kafka:
+    bootstrap-servers: localhost:29092,localhost:39092
+
+grpc:
+  server:
+    reflection-service-enabled: true
+
+product-engine:
+  kafka:
+    topic:
+      agreement-status:
+        name: agreement.status.v1
+        partition-count: 2

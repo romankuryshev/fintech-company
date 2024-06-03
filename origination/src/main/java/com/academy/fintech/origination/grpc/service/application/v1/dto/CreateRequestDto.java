@@ -10,6 +10,12 @@ public record CreateRequestDto(
 
         @NotNull
         @Positive
-        BigDecimal disbursementAmount
+        BigDecimal disbursementAmount,
+        @NotNull
+        String productCode,
+        @NotNull
+        int termInMonths,
+        @NotNull
+        String interest
 ) {
 }
