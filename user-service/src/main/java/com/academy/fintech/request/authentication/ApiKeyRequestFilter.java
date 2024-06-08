@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -28,10 +29,6 @@ public class ApiKeyRequestFilter extends OncePerRequestFilter {
         } catch (Exception exp) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            PrintWriter writer = response.getWriter();
-            writer.print(exp.getMessage());
-            writer.flush();
-            writer.close();
         }
 
         filterChain.doFilter(request, response);

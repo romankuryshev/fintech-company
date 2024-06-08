@@ -11,6 +11,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public class TokenService {
     private final JwtTokenUtil jwtTokenUtil;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    @Transactional
     public TokenPair generatePair(String username) {
         User user = userService.findByUsername(username)
                 .orElseThrow(() -> new AuthorizationException("User not exists"));
@@ -37,6 +39,7 @@ public class TokenService {
         return new TokenPair(token, refreshToken);
     }
 
+    @Transactional
     public TokenPair refreshPair(String token) {
         RefreshToken oldRefreshToken = refreshTokenRepository.findByToken(token);
         if (oldRefreshToken == null) {

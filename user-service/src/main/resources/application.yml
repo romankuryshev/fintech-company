@@ -6,6 +6,9 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    properties:
+      hibernate:
+        generate_statistics: true
 
   datasource:
     url: jdbc:postgresql://db:5432/user_service
@@ -22,3 +25,40 @@ jwt:
     lifetime: 60m
 
 auth-token: user-service
+
+management:
+  endpoint:
+    health:
+      enabled: true
+      roles: ACTUATOR
+      show-details: ALWAYS
+      probes:
+        enabled: true
+    info:
+      enabled: true
+    loggers:
+      enabled: true
+    prometheus:
+      enabled: true
+    caches:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus
+          - loggers
+          - caches
+  health:
+    db:
+      enabled: true
+    diskspace:
+      enabled: false
+    group:
+      readiness:
+        include: '*'
+      liveness:
+        include: '*'

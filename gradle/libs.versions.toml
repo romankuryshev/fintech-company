@@ -24,6 +24,11 @@ spring-email = {module = "org.springframework.boot:spring-boot-starter-mail", ve
 spring-web-flux = {module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring-boot" }
 spring-kafka = {module = "org.springframework.kafka:spring-kafka", version.ref = "spring-kafka"}
 
+#prometheus
+micrometer-registry = { module = "io.micrometer:micrometer-registry-prometheus", version = "1.10.6" }
+micrometer-hibernate = { module = "org.hibernate.orm:hibernate-micrometer", version = "6.5.2.Final"}
+
+
 
 # grpc
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }

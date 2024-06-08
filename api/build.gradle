@@ -5,9 +5,12 @@ plugins {
 
 dependencies {
     implementation libs.spring.security
+    implementation libs.spring.actuator
     implementation libs.spring.grpc.client
     implementation libs.javax.annotation
     implementation libs.spring.web.flux
+
+    implementation libs.micrometer.registry
 
     implementation libs.protobuf.java.util
     implementation libs.grpc.protobuf

@@ -27,6 +27,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) -> request
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/user/registration").permitAll()
                         .requestMatchers("/user/authentication").permitAll()
                         .requestMatchers("/user/refresh-token").permitAll()

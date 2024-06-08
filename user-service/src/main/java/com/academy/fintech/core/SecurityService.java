@@ -37,6 +37,7 @@ public class SecurityService {
         return tokenService.generatePair(request.username());
     }
 
+
     public TokenPair refreshPair(RefreshRequest request) {
         return tokenService.refreshPair(request.refreshToken());
     }

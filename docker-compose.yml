@@ -2,6 +2,8 @@ version: '3.8'
 volumes:
   db:
     driver: local
+  grafana:
+    driver: local
 services:
 
   db:
@@ -20,8 +22,8 @@ services:
   product-engine:
     build: product-engine/
     restart: no
-    ports:
-      - '9090:9090'
+#    ports:
+#      - '9090:9090'
     links:
       - db
 
@@ -40,7 +42,7 @@ services:
     build: api/
     restart: no
     ports:
-      - '8083:8083'
+      - '8080:8080'
     links:
       - origination
 
@@ -75,6 +77,22 @@ services:
     build: user-service/
     restart: no
 
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+        - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - grafana:/var/lib/grafana
 
   zookeeper-1:
     image: confluentinc/cp-zookeeper:7.4.4

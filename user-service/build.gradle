@@ -12,6 +12,10 @@ repositories {
 dependencies {
     implementation libs.spring.jpa
     implementation libs.spring.security
+    implementation libs.spring.actuator
+
+    implementation libs.micrometer.registry
+    implementation libs.micrometer.hibernate
 
     implementation libs.liquibase
     implementation libs.javax.annotation
